@@ -1,0 +1,14 @@
+name = User
+description = Manages the user registration and login system.
+package = System
+version = BACKDROP_VERSION
+type = module
+backdrop = 1.x
+required = TRUE
+configure = admin/config/people
+stylesheets[all][] = css/user.css
+
+; Added by Backdrop CMS packaging script on 2017-09-15
+project = backdrop
+version = 1.8.0
+timestamp = 1505542963

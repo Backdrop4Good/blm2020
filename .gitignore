@@ -1,0 +1,27 @@
+# Ignore active config.
+config/active
+
+# Ignore config that shouldn't be versioned #
+#############################################
+web/modules/contrib/devel
+config/staging/devel.settings.json
+config/staging/smtp.settings.json
+
+# node_modules #
+################
+node_modules
+
+# vendor #
+##########
+vendor
+
+# OS Files #
+############
+.DS_Store
+.swp
+
+# Backup Files #
+################
+*.sql
+*.gz
+*.tgz
