@@ -8,11 +8,20 @@ services:
   appserver:
     build:
       - "curl -sS https://platform.sh/cli/installer | php"
+  database:
+    type: mariadb
+    portforward: 6618
+  cividatabase:
+    type: mariadb
+    portforward: 6619
+    creds:
+      user: root
+      password:
+      database: cividatabase
   node-cli:
     type: node:6.10
     build:
       - cd $LANDO_MOUNT && npm install
-
     globals:
       gulp-cli: "latest"
 

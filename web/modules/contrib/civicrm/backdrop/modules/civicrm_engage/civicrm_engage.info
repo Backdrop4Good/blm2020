@@ -1,0 +1,9 @@
+name = CiviEngage
+description = Walklist and Phone-banking support for CiviCRM.
+version = 1.x-4.7.28
+backdrop = 1.x
+type = module
+package = CiviCRM
+project = civicrm
+
+dependencies[] = civicrm
