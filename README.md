@@ -14,7 +14,8 @@ Dev Setup
 Clone this repository:
 
 ```bash
-git clone
+git clone git@github.com:Backdrop4Good/blm2020.git
+cd blm2020
 ```
 
 Starting the BLM 2020 App
