@@ -1,8 +1,6 @@
 BLM 2020
 --------
-Black Lives Matter Memphis
-Description of project of organization: Black Lives Matter Memphis is
-building a Memphis where Black people thrive and live full lives. We are
+Black Lives Matter Memphis is building a Memphis where Black people thrive and live full lives. We are
 working together to make our BLM 2020 Vision a reality. We will build Black
 political power by organizing around transformative policies; creating and
 implementing programs that heal and restore our community; and dismantling
