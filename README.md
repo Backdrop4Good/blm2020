@@ -17,6 +17,18 @@ Clone this repository:
 git clone git@github.com:Backdrop4Good/blm2020.git
 cd blm2020
 ```
+Add in a settings.php to the web directory. The file that points to the config (which is outside of the web directory).
+
+```
+wget https://github.com/backdrop/backdrop/raw/1.x/settings.php
+```
+
+Replace the config pointer lines with these:
+
+```
+$config_directories['active'] = '../config/active';
+$config_directories['staging'] = '../config/staging';
+```
 
 Starting the BLM 2020 App
 -------------------------
