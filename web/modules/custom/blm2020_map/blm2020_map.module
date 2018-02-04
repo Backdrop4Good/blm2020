@@ -1,0 +1,100 @@
+<?php
+/**
+ * @file
+ * BLM Memphis module to create maps pages.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function blm2020_map_menu() {
+  $items = array();
+  $items['businesses'] = array(
+    'title' => t('Search Businesses'),
+    'page callback' => 'backdrop_get_form',
+    'page arguments' => array('blm2020_map_form'), 
+    'access callback' => TRUE,
+  );
+
+  return $items;
+}
+
+/**
+ * Generate the markup for the leaflet map.
+ *
+ * @see blm2020_map_form().
+ */
+function blm2020_map_view($form, &$form_state) {
+
+  // Provide the div for leaflet to inject the map into.
+  $markup = '<div id="mapid"></div>';
+
+  $businesses = db_select('node', 'n');
+  $businesses->join('field_data_field_location', 'fl', 'n.nid = fl.entity_id');
+  
+  // See if the user has provided a search term.
+  $term = (!empty($form_state['input']['search'])) ? $form_state['input']['search'] : '';
+  $all_businesses = $businesses
+    ->fields('n', array('nid', 'title'))
+    ->fields('fl', array('field_location_lat', 'field_location_lon'))
+      ->addTag('node_access')
+      ->condition('n.type', 'business')
+      ->condition('n.status', 1)
+      ->condition('n.title', '%' . db_like($term) . '%', 'LIKE')
+      ->execute()
+      ->fetchAll();
+  
+  // Add in the css.
+  backdrop_add_css(backdrop_get_path('module', 'blm2020_map') . '/css/blm2020_map.css');
+
+  $markup .= '
+    <script>
+      var mymap = L.map(\'mapid\').setView([35.1095, -90.0490], 11);
+
+      L.tileLayer(\'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}\', {
+        attribution: \'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>\',
+        maxZoom: 18,
+        id: \'mapbox.streets\',
+        accessToken: \'pk.eyJ1Ijoic2VydW5kZXB1dHkiLCJhIjoiY2pjejJjcHRiMTB6cTJ4bzFsMTI0MWNhcSJ9.qJgR6b-sWntEq9zkV5zX0g\'
+      }).addTo(mymap);
+    ';
+
+  foreach ($all_businesses as $index => $business) {
+    $ahref = "<a href='/node/" . $business->nid . "'>More info</a>";
+    $markup .= "var marker$index = L.marker([$business->field_location_lat, $business->field_location_lon]).addTo(mymap);";
+    $markup .= "marker$index.bindPopup(\"<b>$business->title</b><br>$ahref\").openPopup();";
+  }
+
+  $markup .= "mymap.scrollWheelZoom.disable();";
+  $markup .= '</script>';
+
+  return $markup;
+}
+
+/**
+ * BML Map search form.
+ */
+function blm2020_map_form($form, &$form_state) {
+  $form = array();
+  $form['search'] = array(
+    '#type' => 'textfield',
+    '#description' => t('Search by title of the business.'),
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Search'),
+  );
+  $form['map'] = array(
+    '#markup' => blm2020_map_view($form, $form_state),
+  );
+
+
+  return $form;
+}
+
+function blm2020_map_form_validate($form, &$form_state) {
+}
+
+function blm2020_map_form_submit($form, &$form_state) {
+  $form_state['rebuild'] = TRUE;
+}
