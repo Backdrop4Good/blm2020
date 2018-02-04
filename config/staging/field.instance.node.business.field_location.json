@@ -1,0 +1,82 @@
+{
+    "_config_name": "field.instance.node.business.field_location",
+    "field_name": "field_location",
+    "entity_type": "node",
+    "bundle": "business",
+    "label": "location",
+    "widget": {
+        "weight": "-3",
+        "type": "geofield_latlon",
+        "module": "geofield",
+        "active": 1,
+        "settings": {
+            "html5_geolocation": 1
+        }
+    },
+    "description": "The latitude and longitude of the business.",
+    "required": 0,
+    "deleted": 0,
+    "default_value": [],
+    "default_value_function": null,
+    "settings": {
+        "user_register_form": false
+    },
+    "display": {
+        "default": {
+            "label": "above",
+            "type": "geofield_leaflet",
+            "weight": "1",
+            "settings": {
+                "leaflet_map": "OSM Mapnik",
+                "height": "400",
+                "popup": {
+                    "show": 0,
+                    "text": ""
+                },
+                "zoom": {
+                    "initialZoom": "-1",
+                    "minZoom": "1",
+                    "maxZoom": "-1",
+                    "scrollWheelZoom": 1
+                },
+                "icon": {
+                    "iconType": "marker",
+                    "iconUrl": "",
+                    "shadowUrl": "",
+                    "html": "",
+                    "iconImageStyle": "",
+                    "htmlClass": "",
+                    "iconSize": {
+                        "x": "",
+                        "y": ""
+                    },
+                    "iconAnchor": {
+                        "x": "",
+                        "y": ""
+                    },
+                    "shadowAnchor": {
+                        "x": "",
+                        "y": ""
+                    },
+                    "popupAnchor": {
+                        "x": "",
+                        "y": ""
+                    }
+                },
+                "vector_display": {
+                    "stroke_override": 0,
+                    "stroke": 0,
+                    "color": "",
+                    "weight": "",
+                    "opacity": "",
+                    "dashArray": "",
+                    "fill": 0,
+                    "fillColor": "",
+                    "fillOpacity": "",
+                    "clickable": 0
+                }
+            },
+            "module": "leaflet"
+        }
+    }
+}
