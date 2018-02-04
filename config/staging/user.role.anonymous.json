@@ -1,0 +1,21 @@
+{
+    "_config_name": "user.role.anonymous",
+    "name": "anonymous",
+    "label": "Anonymous",
+    "weight": "0",
+    "permissions": [
+        "access content",
+        "access comments",
+        "use text format filtered_html",
+        "access all custom data",
+        "access uploaded files",
+        "make online contributions",
+        "profile create",
+        "profile edit",
+        "profile view",
+        "register for events",
+        "view event info",
+        "view event participants",
+        "access CiviMail subscribe/unsubscribe pages"
+    ]
+}

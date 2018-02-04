@@ -1,0 +1,24 @@
+{
+    "_config_name": "user.role.authenticated",
+    "name": "authenticated",
+    "label": "Authenticated",
+    "weight": "1",
+    "permissions": [
+        "access content",
+        "access comments",
+        "post comments",
+        "skip comment approval",
+        "upload editor images",
+        "use text format filtered_html",
+        "access all custom data",
+        "access uploaded files",
+        "make online contributions",
+        "profile create",
+        "profile edit",
+        "profile view",
+        "register for events",
+        "view event info",
+        "view event participants",
+        "access CiviMail subscribe/unsubscribe pages"
+    ]
+}
