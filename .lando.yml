@@ -7,17 +7,17 @@ config:
 services:
   appserver:
     build:
-      - "curl -sS https://platform.sh/cli/installer | php"
+      # - "curl -sS https://platform.sh/cli/installer | php"
   database:
     type: mariadb
     portforward: 6618
   cividatabase:
     type: mariadb
-    portforward: 6619
+    portforward: true
     creds:
-      user: root
-      password:
-      database: cividatabase
+      user: civi
+      password: civi
+      database: civi
   node-cli:
     type: node:6.10
     build:
@@ -33,6 +33,6 @@ tooling:
     service: node-cli
   gulp:
     service: node-cli
-  platform:
-    service: appserver
-    cmd: /var/www/.platformsh/bin/platform
+  # platform:
+    # service: appserver
+    # cmd: /var/www/.platformsh/bin/platform
