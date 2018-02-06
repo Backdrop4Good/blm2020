@@ -1,4 +1,0 @@
-name = geoPHP
-description = Wraps the geoPHP library: advanced geometry operations in PHP
-backdrop = 1.x
-type = module
