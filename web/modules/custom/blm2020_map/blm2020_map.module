@@ -166,7 +166,7 @@ function blm2020_map_geocode_address($street, $city, $state) {
 }
 
 /**
- * Implements hook_node_insert().
+ * Implements hook_node_presave().
  */
 function blm2020_map_node_presave($node) {
   if ($node->type == 'business') {
