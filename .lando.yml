@@ -13,7 +13,7 @@ services:
     portforward: 6618
   cividatabase:
     type: mariadb
-    portforward: true
+    portforward: 6619 
     creds:
       user: civi
       password: civi
