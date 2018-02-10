@@ -94,28 +94,42 @@ function blm2020_map_form($form, &$form_state) {
   return $form;
 }
 
-function blm2020_map_form_validate($form, &$form_state) {
-}
-
+/**
+ * Submit handler for blm2020_map_form().
+ */
 function blm2020_map_form_submit($form, &$form_state) {
   $form_state['rebuild'] = TRUE;
 }
 
 /**
  * Implements hook_form_alter()
+ */
+function blm2020_map_form_business_node_form_alter(&$form, &$form_state) {
+  $form['field_lattitude']['#disabled'] = TRUE;
+  $form['field_longitude']['#disabled'] = TRUE;
+}
+
+/**
+ * Get coordinates of location from address.
+ *
+ * @param string $street 
+ *   Street address.
+ *
+ * @param sting $city
+ *   City.
+ *
+ * @param string $state
+ *   State.    
  *
  * Get POINT(lat, lon) from Google Maps API geocoding.
  * Example request:
  *   - https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY
+ *
+ * @return array
+ *   Either an empty array or the $lat and $lng if the request returned them.
  */
-function blm2020_map_form_business_node_form_alter(&$form, &$form_state) {
-  //global $settings;
+function blm2020_map_geocode_address($street, $city, $state) {
   $url = "https://maps.googleapis.com/maps/api/geocode/json?address=";
-  //dpm($form['#form_id']);
-  //dpm($form_state, 'form_state');
-  $street = $form['field_business_address']['und'][0]['#address']['thoroughfare'];
-  $city = $form['field_business_address']['und'][0]['#address']['locality'];
-  $state = $form['field_business_address']['und'][0]['#address']['administrative_area'];
   if (!empty($street)) {
     $street = str_replace(' ', '+', $street);
     $url .= $street;
@@ -141,18 +155,30 @@ function blm2020_map_form_business_node_form_alter(&$form, &$form_state) {
     $content = curl_exec($ch);
     curl_close($ch);
     $json = json_decode($content);
-    //dpm($json, 'json response');
-  
-    //dpm($json->results[0]->geometry->location->lat);
+
     $lat = $json->results[0]->geometry->location->lat;
     $lng = $json->results[0]->geometry->location->lng;
+
+    return array($lat, $lng);
   }
-  // @todo  geofield is shyte take it off of the `business` content type and add text field to pass to leaflet.
-  //if (!empty($lat) && !empty($lon)) {
-    $form['field_lattitude']['und'][0]['value']['#value'] = $lat;
-    $form['field_longitude']['und'][0]['value']['#value'] = $lng;
-  //}
-  //dpm($form, 'form');
-  $form['field_lattitude']['#disabled'] = TRUE;
-  $form['field_longitude']['#disabled'] = TRUE;
+
+  return array();
 }
+
+/**
+ * Implements hook_node_insert().
+ */
+function blm2020_map_node_presave($node) {
+  if ($node->type == 'business') {
+    $coordinates = blm2020_map_geocode_address(
+      $node->field_business_address['und'][0]['thoroughfare'],
+      $node->field_business_address['und'][0]['locality'],
+      $node->field_business_address['und'][0]['administrative_area']
+    );
+    if (!empty($coordinates)) {
+      $node->field_lattitude[LANGUAGE_NONE][0]['value'] = $coordinates[0];
+      $node->field_longitude[LANGUAGE_NONE][0]['value'] = $coordinates[1];
+    }
+  }
+}
+
