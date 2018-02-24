@@ -9,6 +9,7 @@ services:
   appserver:
     build:
       - cd $LANDO_MOUNT && composer install
+      - composer global require laravel/envoy
   database:
     type: mariadb
     portforward: 6618
