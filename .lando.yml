@@ -3,11 +3,12 @@ recipe: backdrop
 config:
   webroot: web
   php: '7.0'
+  via: apache
 
 services:
   appserver:
     build:
-      # - "curl -sS https://platform.sh/cli/installer | php"
+      - cd $LANDO_MOUNT && composer install
   database:
     type: mariadb
     portforward: 6618
@@ -33,6 +34,4 @@ tooling:
     service: node-cli
   gulp:
     service: node-cli
-  # platform:
-    # service: appserver
-    # cmd: /var/www/.platformsh/bin/platform
+
