@@ -4,7 +4,7 @@
     "type": "geofield",
     "translatable": false,
     "module": "geofield",
-    "active": 1,
+    "active": 0,
     "locked": 0,
     "cardinality": "1",
     "deleted": 0,
