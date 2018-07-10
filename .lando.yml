@@ -4,11 +4,11 @@ config:
   webroot: web
   php: '7.0'
   via: apache
-
+  backdrush: 0.0.6
+  xdebug: true
 services:
   appserver:
-    build:
-      - cd $LANDO_MOUNT && composer install
+    run:
       - composer global require laravel/envoy
   database:
     type: mariadb
@@ -22,7 +22,7 @@ services:
       database: civi
   node-cli:
     type: node:6.10
-    build:
+    run:
       - cd $LANDO_MOUNT && npm install
     globals:
       gulp-cli: "latest"
