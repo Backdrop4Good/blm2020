@@ -4,6 +4,11 @@ description = A subtheme of Basis.
 backdrop = 1.x
 base theme = basis
 
+stylesheets[all][] = css/base.css
+stylesheets[all][] = css/layout.css
+stylesheets[all][] = css/print.css
+stylesheets[all][] = css/skin.css
+
 stylesheets[all][] = css/colors.css
-stylesheets[all][] = page_style.css
+stylesheets[all][] = css/styles.css
 

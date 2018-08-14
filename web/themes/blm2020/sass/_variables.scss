@@ -1,0 +1,23 @@
+// Colors ///////////////
+// common colors
+$white: #fff;
+$red: #ee696c;
+$yellow: #e8ed57;
+// b&w colors as placeholders
+$blk: #000;
+$dark-gray: lighten($blk, 20%);
+$med-gray: lighten($blk, 40%);
+$light-gray: lighten($blk, 70%);
+$lighter-gray: lighten($blk, 90%);
+$off-white: lighten($blk, 97%);
+
+// Utility color variables ///////////////
+$heading: $dark-gray;
+$link: $med-gray;
+
+// Fonts ///////////////
+$opensans: 'Open Sans';
+$poppins: 'Poppins';
+$heading_font: $opensans;
+$body_font: $poppins;
+
