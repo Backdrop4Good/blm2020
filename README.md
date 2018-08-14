@@ -39,6 +39,14 @@ BLM 2020 uses [Lando](https://docs.devwithlando.io) to manage the dev stack and 
 lando start
 ```
 
+Once the the app has been started, install Backdrop using the installer at http://blm2020.lndo.site. Then import the Backdrop Configuration:
+
+```bash
+lando drush bcim
+```
+
+You may need to flush the caches.
+
 Theming
 -------
 
