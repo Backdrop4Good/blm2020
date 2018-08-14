@@ -1,0 +1,8 @@
+{
+    "_config_name": "taxonomy.vocabulary.business_categories",
+    "name": "Business Categories",
+    "machine_name": "business_categories",
+    "description": "",
+    "hierarchy": 1,
+    "weight": 0
+}
