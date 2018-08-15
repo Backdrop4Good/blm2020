@@ -1,0 +1,20 @@
+{
+    "_config_name": "contact.categories",
+    "contact_default_category": 1,
+    "categories": [
+        {
+            "cid": 2,
+            "category": "Contact Test",
+            "recipients": "allegradufresne@gmail.com",
+            "reply": "",
+            "weight": "0"
+        },
+        {
+            "cid": 1,
+            "category": "Website feedback",
+            "recipients": "serundeputy@gmail.com",
+            "reply": "",
+            "weight": 1
+        }
+    ]
+}

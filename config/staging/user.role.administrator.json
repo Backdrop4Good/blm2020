@@ -164,6 +164,11 @@
         "edit own business content",
         "edit any business content",
         "delete own business content",
-        "delete any business content"
+        "delete any business content",
+        "edit terms in business_categories",
+        "delete terms in business_categories",
+        "administer contact forms",
+        "access site-wide contact form",
+        "access user contact forms"
     ]
 }

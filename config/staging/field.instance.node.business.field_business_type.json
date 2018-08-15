@@ -1,0 +1,31 @@
+{
+    "_config_name": "field.instance.node.business.field_business_type",
+    "field_name": "field_business_type",
+    "entity_type": "node",
+    "bundle": "business",
+    "label": "Business Type",
+    "widget": {
+        "weight": "6",
+        "type": "options_select",
+        "module": "options",
+        "active": 1,
+        "settings": []
+    },
+    "description": "This will categorize your business and help users find you.",
+    "required": 0,
+    "deleted": 0,
+    "default_value": null,
+    "default_value_function": null,
+    "settings": {
+        "user_register_form": false
+    },
+    "display": {
+        "default": {
+            "label": "above",
+            "type": "taxonomy_term_reference_link",
+            "settings": [],
+            "module": "taxonomy",
+            "weight": 5
+        }
+    }
+}
