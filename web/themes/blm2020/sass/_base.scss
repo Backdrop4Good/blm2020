@@ -195,3 +195,11 @@ table {
     border-bottom: 1px solid $off-white;
   }
 }
+
+@font-face {
+  font-family: 'cornerstoneregular';
+  src: url('../fonts/cornerstone-webfont.woff2') format('woff2'),
+  url('../fonts/cornerstone-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
