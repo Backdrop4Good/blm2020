@@ -4,7 +4,7 @@
     "type": "addressfield",
     "translatable": false,
     "module": "addressfield",
-    "active": 0,
+    "active": 1,
     "locked": 0,
     "cardinality": "1",
     "deleted": 0,
