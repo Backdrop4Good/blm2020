@@ -1,9 +1,9 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.7                                                |
+ | CiviCRM version 5                                                  |
  +--------------------------------------------------------------------+
- | Copyright CiviCRM LLC (c) 2004-2017                                |
+ | Copyright CiviCRM LLC (c) 2004-2018                                |
  +--------------------------------------------------------------------+
  | This file is a part of CiviCRM.                                    |
  |                                                                    |
@@ -28,7 +28,7 @@
 /**
  *
  * @package CRM
- * @copyright CiviCRM LLC (c) 2004-2017
+ * @copyright CiviCRM LLC (c) 2004-2018
  */
 class CRM_Core_BAO_FinancialTrxn extends CRM_Financial_DAO_FinancialTrxn {
   /**
@@ -48,7 +48,7 @@ class CRM_Core_BAO_FinancialTrxn extends CRM_Financial_DAO_FinancialTrxn {
    * @param array $params
    *   (reference ) an assoc array of name/value pairs.
    *
-   * @return CRM_Core_BAO_FinancialTrxn
+   * @return CRM_Financial_DAO_FinancialTrxn
    */
   public static function create($params) {
     $trxn = new CRM_Financial_DAO_FinancialTrxn();
@@ -116,7 +116,7 @@ class CRM_Core_BAO_FinancialTrxn extends CRM_Financial_DAO_FinancialTrxn {
    * @param array $defaults
    *   (reference ) an assoc array to hold the flattened values.
    *
-   * @return CRM_Contribute_BAO_ContributionType
+   * @return \CRM_Financial_DAO_FinancialTrxn
    */
   public static function retrieve(&$params, &$defaults) {
     $financialItem = new CRM_Financial_DAO_FinancialTrxn();
@@ -197,7 +197,7 @@ LIMIT 1;";
    * Get the transaction id for the (latest) refund associated with a contribution.
    *
    * @param int $contributionID
-   * @return string
+   * @return array
    */
   public static function getRefundTransactionIDs($contributionID) {
     $refundStatusID = CRM_Core_PseudoConstant::getKey('CRM_Contribute_BAO_Contribution', 'contribution_status_id', 'Refunded');
@@ -350,7 +350,6 @@ WHERE ceft.entity_id = %1";
       $contributionStatuses = CRM_Contribute_PseudoConstant::contributionStatus(NULL, 'name');
       $toFinancialAccountType = !empty($params['isDeleted']) ? 'Premiums Inventory Account is' : 'Cost of Sales Account is';
       $fromFinancialAccountType = !empty($params['isDeleted']) ? 'Cost of Sales Account is' : 'Premiums Inventory Account is';
-      $accountRelationship = array_flip($accountRelationship);
       $financialtrxn = array(
         'to_financial_account_id' => CRM_Contribute_PseudoConstant::getRelationalFinancialAccount($params['financial_type_id'], $toFinancialAccountType),
         'from_financial_account_id' => CRM_Contribute_PseudoConstant::getRelationalFinancialAccount($params['financial_type_id'], $fromFinancialAccountType),
@@ -369,7 +368,7 @@ WHERE ceft.entity_id = %1";
         'id' => $params['oldPremium']['product_id'],
       );
       $productDetails = array();
-      CRM_Contribute_BAO_ManagePremiums::retrieve($premiumParams, $productDetails);
+      CRM_Contribute_BAO_Product::retrieve($premiumParams, $productDetails);
       $params = array(
         'cost' => CRM_Utils_Array::value('cost', $productDetails),
         'currency' => CRM_Utils_Array::value('currency', $productDetails),
@@ -387,7 +386,7 @@ WHERE ceft.entity_id = %1";
    * @param array $params
    *   To create trxn entries.
    *
-   * @return bool
+   * @return bool|void
    */
   public static function recordFees($params) {
     $domainId = CRM_Core_Config::domainID();
@@ -482,11 +481,11 @@ WHERE ft.is_payment = 1
 ";
 
       $ftTotalAmt = CRM_Core_DAO::singleValueQuery($sqlFtTotalAmt);
-      $value = 0;
       if (!$ftTotalAmt) {
         $ftTotalAmt = 0;
       }
-      $value = $paymentVal = $lineItemTotal - $ftTotalAmt;
+      $currency = CRM_Core_DAO::getFieldValue('CRM_Contribute_DAO_Contribution', $contributionId, 'currency');
+      $value = $paymentVal = CRM_Utils_Money::subtractCurrencies($lineItemTotal, $ftTotalAmt, $currency);
       if ($returnType) {
         $value = array();
         if ($paymentVal < 0) {
@@ -506,7 +505,7 @@ WHERE ft.is_payment = 1
   /**
    * @param int $contributionId
    *
-   * @return array
+   * @return string
    */
   public static function getTotalPayments($contributionId) {
     $statusId = CRM_Core_PseudoConstant::getKey('CRM_Contribute_BAO_Contribution', 'contribution_status_id', 'Completed');
@@ -530,7 +529,7 @@ WHERE ft.is_payment = 1
    * @param array $contribution
    * @param array $params
    *
-   * @return CRM_Core_BAO_FinancialTrxn
+   * @return \CRM_Financial_DAO_FinancialTrxn
    */
   public static function getPartialPaymentTrxn($contribution, $params) {
     $trxn = CRM_Contribute_BAO_Contribution::recordPartialPayment($contribution, $params);
