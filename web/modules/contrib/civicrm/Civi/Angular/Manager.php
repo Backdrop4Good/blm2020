@@ -83,6 +83,7 @@ class Manager {
       $angularModules['crmCxn'] = include "$civicrm_root/ang/crmCxn.ang.php";
       // $angularModules['crmExample'] = include "$civicrm_root/ang/crmExample.ang.php";
       $angularModules['crmResource'] = include "$civicrm_root/ang/crmResource.ang.php";
+      $angularModules['crmRouteBinder'] = include "$civicrm_root/ang/crmRouteBinder.ang.php";
       $angularModules['crmUi'] = include "$civicrm_root/ang/crmUi.ang.php";
       $angularModules['crmUtil'] = include "$civicrm_root/ang/crmUtil.ang.php";
       $angularModules['dialogService'] = include "$civicrm_root/ang/dialogService.ang.php";
@@ -245,7 +246,7 @@ class Manager {
    *   Invalid partials configuration.
    */
   public function getPartials($name) {
-    $cacheKey = "angular-partials::$name";
+    $cacheKey = "angular-partials_$name";
     $cacheValue = $this->cache->get($cacheKey);
     if ($cacheValue === NULL) {
       $cacheValue = ChangeSet::applyResourceFilters($this->getChangeSets(), 'partials', $this->getRawPartials($name));

@@ -1,9 +1,9 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.7                                                |
+ | CiviCRM version 5                                                  |
  +--------------------------------------------------------------------+
- | Copyright CiviCRM LLC (c) 2004-2017                                |
+ | Copyright CiviCRM LLC (c) 2004-2018                                |
  +--------------------------------------------------------------------+
  | This file is a part of CiviCRM.                                    |
  |                                                                    |
@@ -28,7 +28,7 @@
 /**
  *
  * @package CRM
- * @copyright CiviCRM LLC (c) 2004-2017
+ * @copyright CiviCRM LLC (c) 2004-2018
  */
 
 /**
@@ -139,6 +139,51 @@ class CRM_Utils_Money {
    */
   public static function getCurrencyPrecision($currency = NULL) {
     return 2;
+  }
+
+  /**
+   * Subtract currencies using integers instead of floats, to preserve precision
+   *
+   * @return float
+   *   Result of subtracting $rightOp from $leftOp to the precision of $currency
+   */
+  public static function subtractCurrencies($leftOp, $rightOp, $currency) {
+    if (is_numeric($leftOp) && is_numeric($rightOp)) {
+      $precision = pow(10, self::getCurrencyPrecision($currency));
+      return (($leftOp * $precision) - ($rightOp * $precision)) / $precision;
+    }
+  }
+
+  /**
+   * Tests if two currency values are equal, taking into account the currency's
+   * precision, so that if the difference between the two values is less than
+   * one more order of magnitude for the precision, then the values are
+   * considered as equal. So, if the currency has  precision of 2 decimal
+   * points, a difference of more than 0.001 will cause the values to be
+   * considered as different. Anything less than 0.001 will be considered as
+   * equal.
+   *
+   * Eg.
+   *
+   * 1.2312 == 1.2319 with a currency precision of 2 decimal points
+   * 1.2310 != 1.2320 with a currency precision of 2 decimal points
+   * 1.3000 != 1.2000 with a currency precision of 2 decimal points
+   *
+   * @param $value1
+   * @param $value2
+   * @param $currency
+   *
+   * @return bool
+   */
+  public static function equals($value1, $value2, $currency) {
+    $precision = 1 / pow(10, self::getCurrencyPrecision($currency) + 1);
+    $difference = self::subtractCurrencies($value1, $value2, $currency);
+
+    if (abs($difference) > $precision) {
+      return FALSE;
+    }
+
+    return TRUE;
   }
 
 }

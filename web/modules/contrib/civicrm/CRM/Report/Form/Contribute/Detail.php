@@ -1,9 +1,9 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.7                                                |
+ | CiviCRM version 5                                                  |
  +--------------------------------------------------------------------+
- | Copyright CiviCRM LLC (c) 2004-2017                                |
+ | Copyright CiviCRM LLC (c) 2004-2018                                |
  +--------------------------------------------------------------------+
  | This file is a part of CiviCRM.                                    |
  |                                                                    |
@@ -28,22 +28,49 @@
 /**
  *
  * @package CRM
- * @copyright CiviCRM LLC (c) 2004-2017
+ * @copyright CiviCRM LLC (c) 2004-2018
  */
 class CRM_Report_Form_Contribute_Detail extends CRM_Report_Form {
-  protected $_addressField = FALSE;
-
-  protected $_emailField = FALSE;
 
   protected $_summary = NULL;
 
   protected $_softFrom = NULL;
+
+  protected $noDisplayContributionOrSoftColumn = FALSE;
 
   protected $_customGroupExtends = array(
     'Contact',
     'Individual',
     'Contribution',
   );
+
+  protected $groupConcatTested = TRUE;
+
+  protected $isTempTableBuilt = FALSE;
+
+  /**
+   * Query mode.
+   *
+   * This can be 'Main' or 'SoftCredit' to denote which query we are building.
+   *
+   * @var string
+   */
+  protected $queryMode = 'Main';
+
+  /**
+   * Is this report being run on contributions as the base entity.
+   *
+   * The report structure is generally designed around a base entity but
+   * depending on input it can be run in a sort of hybrid way that causes a lot
+   * of complexity.
+   *
+   * If it is in isContributionsOnlyMode we can simplify.
+   *
+   * (arguably there should be 2 separate report templates, not one doing double duty.)
+   *
+   * @var bool
+   */
+  protected $isContributionBaseMode = FALSE;
 
   /**
    * This report has been optimised for group filtering.
@@ -67,65 +94,15 @@ class CRM_Report_Form_Contribute_Detail extends CRM_Report_Form {
       $this->activeCampaigns = $getCampaigns['campaigns'];
       asort($this->activeCampaigns);
     }
-    $this->_columns = array(
-      'civicrm_contact' => array(
-        'dao' => 'CRM_Contact_DAO_Contact',
-        'fields' => $this->getBasicContactFields(),
-        'filters' => array(
-          'sort_name' => array(
-            'title' => ts('Donor Name'),
-            'operator' => 'like',
-          ),
-          'id' => array(
-            'title' => ts('Contact ID'),
-            'no_display' => TRUE,
-            'type' => CRM_Utils_Type::T_INT,
-          ),
-          'gender_id' => array(
-            'title' => ts('Gender'),
-            'operatorType' => CRM_Report_Form::OP_MULTISELECT,
-            'options' => CRM_Core_PseudoConstant::get('CRM_Contact_DAO_Contact', 'gender_id'),
-          ),
-          'birth_date' => array(
-            'title' => ts('Birth Date'),
-            'operatorType' => CRM_Report_Form::OP_DATE,
-          ),
-          'contact_type' => array(
-            'title' => ts('Contact Type'),
-          ),
-          'contact_sub_type' => array(
-            'title' => ts('Contact Subtype'),
-          ),
-        ),
-        'grouping' => 'contact-fields',
-        'order_bys' => array(
-          'sort_name' => array(
-            'title' => ts('Last Name, First Name'),
-            'default' => '1',
-            'default_weight' => '0',
-            'default_order' => 'ASC',
-          ),
-          'first_name' => array(
-            'name' => 'first_name',
-            'title' => ts('First Name'),
-          ),
-          'gender_id' => array(
-            'name' => 'gender_id',
-            'title' => ts('Gender'),
-          ),
-          'birth_date' => array(
-            'name' => 'birth_date',
-            'title' => ts('Birth Date'),
-          ),
-          'contact_type' => array(
-            'title' => ts('Contact Type'),
-          ),
-          'contact_sub_type' => array(
-            'title' => ts('Contact Subtype'),
-          ),
-        ),
 
-      ),
+    $this->_columns = array_merge($this->getColumns('Contact', array(
+      'order_bys_defaults' => array('sort_name' => 'ASC '),
+      'fields_defaults' => array('sort_name'),
+      'fields_excluded' => array('id'),
+      'fields_required' => array('id'),
+      'filters_defaults' => array('is_deleted' => 0),
+      'no_field_disambiguation' => TRUE,
+    )), array(
       'civicrm_email' => array(
         'dao' => 'CRM_Core_DAO_Email',
         'fields' => array(
@@ -272,6 +249,13 @@ class CRM_Report_Form_Contribute_Detail extends CRM_Report_Form {
           'payment_instrument_id' => array('title' => ts('Payment Method')),
           'receive_date' => array('title' => ts('Date Received')),
         ),
+        'group_bys' => array(
+          'contribution_id' => array(
+            'name' => 'id',
+            'required' => TRUE,
+            'title' => ts('Contribution'),
+          ),
+        ),
         'grouping' => 'contri-fields',
       ),
       'civicrm_contribution_soft' => array(
@@ -294,7 +278,6 @@ class CRM_Report_Form_Contribute_Detail extends CRM_Report_Form {
         'fields' => array(
           'card_type_id' => array(
             'title' => ts('Credit Card Type'),
-            'dbAlias' => 'GROUP_CONCAT(financial_trxn_civireport.card_type_id SEPARATOR ",")',
           ),
         ),
         'filters' => array(
@@ -358,7 +341,7 @@ class CRM_Report_Form_Contribute_Detail extends CRM_Report_Form {
           ),
         ),
       ),
-    ) + $this->addAddressFields(FALSE);
+    )) + $this->addAddressFields(FALSE);
     // The tests test for this variation of the sort_name field. Don't argue with the tests :-).
     $this->_columns['civicrm_contact']['fields']['sort_name']['title'] = ts('Donor Name');
     $this->_groupFilter = TRUE;
@@ -381,34 +364,6 @@ class CRM_Report_Form_Contribute_Detail extends CRM_Report_Form {
 
     $this->_currencyColumn = 'civicrm_contribution_currency';
     parent::__construct();
-  }
-
-  public function preProcess() {
-    parent::preProcess();
-  }
-
-  public function select() {
-    $this->_columnHeaders = array();
-
-    parent::select();
-    //total_amount was affected by sum as it is considered as one of the stat field
-    //so it is been replaced with correct alias, CRM-13833
-    $this->_select = str_replace("sum({$this->_aliases['civicrm_contribution']}.total_amount)", "{$this->_aliases['civicrm_contribution']}.total_amount", $this->_select);
-    $this->_selectClauses = str_replace("sum({$this->_aliases['civicrm_contribution']}.total_amount)", "{$this->_aliases['civicrm_contribution']}.total_amount", $this->_selectClauses);
-  }
-
-  public function orderBy() {
-    parent::orderBy();
-
-    // please note this will just add the order-by columns to select query, and not display in column-headers.
-    // This is a solution to not throw fatal errors when there is a column in order-by, not present in select/display columns.
-    foreach ($this->_orderByFields as $orderBy) {
-      if (!array_key_exists($orderBy['name'], $this->_params['fields']) &&
-        empty($orderBy['section']) && (strpos($this->_select, $orderBy['dbAlias']) === FALSE)
-      ) {
-        $this->_select .= ", {$orderBy['dbAlias']} as {$orderBy['tplField']}";
-      }
-    }
   }
 
   /**
@@ -436,11 +391,6 @@ class CRM_Report_Form_Contribute_Detail extends CRM_Report_Form {
     $this->appendAdditionalFromJoins();
   }
 
-  public function groupBy() {
-    $groupBy = array("{$this->_aliases['civicrm_contact']}.id", "{$this->_aliases['civicrm_contribution']}.id");
-    $this->_groupBy = CRM_Contact_BAO_Query::getGroupByFromSelectColumns($this->_selectClauses, $groupBy);
-  }
-
   /**
    * @param $rows
    *
@@ -463,6 +413,7 @@ class CRM_Report_Form_Contribute_Detail extends CRM_Report_Form {
     $group = "\nGROUP BY {$this->_aliases['civicrm_contribution']}.currency";
     $sql = "{$select} {$this->_from} {$this->_where} {$group}";
     $dao = CRM_Core_DAO::executeQuery($sql);
+    $this->addToDeveloperTab($sql);
 
     while ($dao->fetch()) {
       $totalAmount[] = CRM_Utils_Money::format($dao->amount, $dao->currency) . " (" . $dao->count . ")";
@@ -513,6 +464,7 @@ SELECT COUNT(contribution_soft_civireport.amount ) as count,
 {$this->_softFrom}
 GROUP BY {$this->_aliases['civicrm_contribution']}.currency";
       $dao = CRM_Core_DAO::executeQuery($sql);
+      $this->addToDeveloperTab($sql);
       while ($dao->fetch()) {
         $totalAmount[] = CRM_Utils_Money::format($dao->amount, $dao->currency) . " (" .
           $dao->count . ")";
@@ -539,23 +491,26 @@ GROUP BY {$this->_aliases['civicrm_contribution']}.currency";
   }
 
   /**
-   * This function appears to have been overrriden for the purposes of facilitating soft credits in the report.
+   * Build the report query.
    *
-   * The report appears to have 2 different functions:
-   * 1) contribution report
-   * 2) soft credit report - showing a row per 'payment engagement' (payment or soft credit). There is a separate
-   * soft credit report as well.
+   * @param bool $applyLimit
    *
-   * Somewhat confusingly this report returns multiple rows per contribution when soft credits are included. It feels
-   * like there is a case to split it into 2 separate reports.
-   *
-   * Soft credit functionality is not currently unit tested for this report.
+   * @return string
    */
-  public function postProcess() {
-    // get the acl clauses built before we assemble the query
-    $this->buildACLClause($this->_aliases['civicrm_contact']);
+  public function buildQuery($applyLimit = TRUE) {
+    if ($this->isTempTableBuilt) {
+      return "SELECT * FROM civireport_contribution_detail_temp3 $this->_orderBy";
+    }
+    return parent::buildQuery($applyLimit);
+  }
 
-    $this->beginPostProcess();
+  /**
+   * Shared function for preliminary processing.
+   *
+   * This is called by the api / unit tests and the form layer and is
+   * the right place to do 'initial analysis of input'.
+   */
+  public function beginPostProcessCommon() {
     // CRM-18312 - display soft_credits and soft_credits_for column
     // when 'Contribution or Soft Credit?' column is not selected
     if (empty($this->_params['fields']['contribution_or_soft'])) {
@@ -563,23 +518,32 @@ GROUP BY {$this->_aliases['civicrm_contribution']}.currency";
       $this->noDisplayContributionOrSoftColumn = TRUE;
     }
 
-    if (CRM_Utils_Array::value('contribution_or_soft_value', $this->_params) ==
-      'contributions_only' &&
-      !empty($this->_params['fields']['soft_credit_type_id'])
+    if (CRM_Utils_Array::value('contribution_or_soft_value', $this->_params) == 'contributions_only') {
+      $this->isContributionBaseMode = TRUE;
+    }
+    if ($this->isContributionBaseMode &&
+      (!empty($this->_params['fields']['soft_credit_type_id'])
+      || !empty($this->_params['soft_credit_type_id_value']))
     ) {
       unset($this->_params['fields']['soft_credit_type_id']);
       if (!empty($this->_params['soft_credit_type_id_value'])) {
         $this->_params['soft_credit_type_id_value'] = array();
+        CRM_Core_Session::setStatus(ts('Is it not possible to filter on soft contribution type when not including soft credits.'));
       }
     }
-
     // 1. use main contribution query to build temp table 1
     $sql = $this->buildQuery();
     $tempQuery = "CREATE TEMPORARY TABLE civireport_contribution_detail_temp1 {$this->_databaseAttributes} AS {$sql}";
-    CRM_Core_DAO::executeQuery($tempQuery);
+    $this->temporaryTables['civireport_contribution_detail_temp1'] = ['name' => 'civireport_contribution_detail_temp1', 'temporary' => TRUE];
+    $this->executeReportQuery($tempQuery);
     $this->setPager();
 
     // 2. customize main contribution query for soft credit, and build temp table 2 with soft credit contributions only
+    $this->queryMode = 'SoftCredit';
+    // Rebuild select with no groupby. Do not let column headers change.
+    $headers = $this->_columnHeaders;
+    $this->select();
+    $this->_columnHeaders = $headers;
     $this->softCreditFrom();
     // also include custom group from if included
     // since this might be included in select
@@ -591,10 +555,13 @@ GROUP BY {$this->_aliases['civicrm_contribution']}.currency";
     if (!empty($this->_groupBy) && !$this->noDisplayContributionOrSoftColumn) {
       $this->_groupBy .= ', contribution_soft_civireport.amount';
     }
-    // we inner join with temp1 to restrict soft contributions to those in temp1 table
-    $sql = "{$select} {$this->_from} {$this->_where} {$this->_groupBy}";
+    // we inner join with temp1 to restrict soft contributions to those in temp1 table.
+    // no group by here as we want to display as many soft credit rows as actually exist.
+    $sql = "{$select} {$this->_from} {$this->_where}";
     $tempQuery = "CREATE TEMPORARY TABLE civireport_contribution_detail_temp2 {$this->_databaseAttributes} AS {$sql}";
-    CRM_Core_DAO::executeQuery($tempQuery);
+    $this->executeReportQuery($tempQuery);
+    $this->temporaryTables['civireport_contribution_detail_temp2'] = ['name' => 'civireport_contribution_detail_temp2', 'temporary' => TRUE];
+
     if (CRM_Utils_Array::value('contribution_or_soft_value', $this->_params) ==
       'soft_credits_only'
     ) {
@@ -613,64 +580,42 @@ GROUP BY {$this->_aliases['civicrm_contribution']}.currency";
     $this->customDataFrom();
 
     // 3. Decide where to populate temp3 table from
-    if (CRM_Utils_Array::value('contribution_or_soft_value', $this->_params) ==
-      'contributions_only'
+    if ($this->isContributionBaseMode
     ) {
-      $tempQuery = "(SELECT * FROM civireport_contribution_detail_temp1)";
+      $this->executeReportQuery(
+        "CREATE TEMPORARY TABLE civireport_contribution_detail_temp3 {$this->_databaseAttributes} AS (SELECT * FROM civireport_contribution_detail_temp1)"
+      );
     }
     elseif (CRM_Utils_Array::value('contribution_or_soft_value', $this->_params) ==
       'soft_credits_only'
     ) {
-      $tempQuery = "(SELECT * FROM civireport_contribution_detail_temp2)";
+      $this->executeReportQuery(
+        "CREATE TEMPORARY TABLE civireport_contribution_detail_temp3 {$this->_databaseAttributes} AS (SELECT * FROM civireport_contribution_detail_temp2)"
+      );
     }
     else {
-      $tempQuery = "
+      $this->executeReportQuery("CREATE TEMPORARY TABLE civireport_contribution_detail_temp3 {$this->_databaseAttributes}
 (SELECT * FROM civireport_contribution_detail_temp1)
 UNION ALL
-(SELECT * FROM civireport_contribution_detail_temp2)";
+(SELECT * FROM civireport_contribution_detail_temp2)");
     }
+    $this->temporaryTables['civireport_contribution_detail_temp3'] = ['name' => 'civireport_contribution_detail_temp3', 'temporary' => TRUE];
+    $this->isTempTableBuilt = TRUE;
+  }
 
-    // 4. build temp table 3
-    $sql = "CREATE TEMPORARY TABLE civireport_contribution_detail_temp3 {$this->_databaseAttributes} AS {$tempQuery}";
-    CRM_Core_DAO::executeQuery($sql);
-
-    // 5. Re-construct order-by to make sense for final query on temp3 table
-    $orderBy = '';
-    if (!empty($this->_orderByArray)) {
-      $aliases = array_flip($this->_aliases);
-      $orderClause = array();
-      foreach ($this->_orderByArray as $clause) {
-        list($alias, $rest) = explode('.', $clause);
-        // CRM-17280 -- In case, we are ordering by custom fields
-        // modify $rest to match the alias used for them in temp3 table
-        $grp = new CRM_Core_DAO_CustomGroup();
-        $grp->table_name = $aliases[$alias];
-        if ($grp->find()) {
-          list($fld, $order) = explode(' ', $rest);
-          foreach ($this->_columns[$aliases[$alias]]['fields'] as $fldName => $value) {
-            if ($value['name'] == $fld) {
-              $fld = $fldName;
-            }
-          }
-          $rest = "{$fld} {$order}";
-        }
-        $orderClause[] = $aliases[$alias] . "_" . $rest;
-      }
-      $orderBy = (!empty($orderClause)) ? "ORDER BY " . implode(', ', $orderClause) : '';
+  /**
+   * Store group bys into array - so we can check elsewhere what is grouped.
+   *
+   * If we are generating a table of soft credits we do not want to be using
+   * group by.
+   */
+  protected function storeGroupByArray() {
+    if ($this->queryMode === 'SoftCredit') {
+      $this->_groupByArray = [];
     }
-
-    // 6. show result set from temp table 3
-    $rows = array();
-    $sql = "SELECT * FROM civireport_contribution_detail_temp3 {$orderBy}";
-    $this->buildRows($sql, $rows);
-
-    // format result set.
-    $this->formatDisplay($rows, FALSE);
-
-    // assign variables to templates
-    $this->doTemplateAssignment($rows);
-    // do print / pdf / instance stuff if needed
-    $this->endPostProcess($rows);
+    else {
+      parent::storeGroupByArray();
+    }
   }
 
   /**
@@ -683,7 +628,6 @@ UNION ALL
    *   Rows generated by SQL, with an array for each row.
    */
   public function alterDisplay(&$rows) {
-    $checkList = array();
     $entryFound = FALSE;
     $display_flag = $prev_cid = $cid = 0;
     $contributionTypes = CRM_Contribute_PseudoConstant::financialType();
@@ -771,7 +715,7 @@ UNION ALL
       }
 
       // Contribution amount links to viewing contribution
-      if (($value = CRM_Utils_Array::value('civicrm_contribution_total_amount_sum', $row)) &&
+      if (($value = CRM_Utils_Array::value('civicrm_contribution_total_amount', $row)) &&
         CRM_Core_Permission::check('access CiviContribute')
       ) {
         $url = CRM_Utils_System::url("civicrm/contact/view/contribution",
@@ -780,8 +724,8 @@ UNION ALL
           "&action=view&context=contribution&selectedChild=contribute",
           $this->_absoluteUrl
         );
-        $rows[$rowNum]['civicrm_contribution_total_amount_sum_link'] = $url;
-        $rows[$rowNum]['civicrm_contribution_total_amount_sum_hover'] = ts("View Details of this Contribution.");
+        $rows[$rowNum]['civicrm_contribution_total_amount_link'] = $url;
+        $rows[$rowNum]['civicrm_contribution_total_amount_hover'] = ts("View Details of this Contribution.");
         $entryFound = TRUE;
       }
 
@@ -800,9 +744,10 @@ UNION ALL
         array_key_exists('civicrm_contribution_contribution_id', $row)
       ) {
         $query = "
-SELECT civicrm_contact_id, civicrm_contact_sort_name, civicrm_contribution_total_amount_sum, civicrm_contribution_currency
+SELECT civicrm_contact_id, civicrm_contact_sort_name, civicrm_contribution_total_amount, civicrm_contribution_currency
 FROM   civireport_contribution_detail_temp2
 WHERE  civicrm_contribution_contribution_id={$row['civicrm_contribution_contribution_id']}";
+        $this->addToDeveloperTab($query);
         $dao = CRM_Core_DAO::executeQuery($query);
         $string = '';
         $separator = ($this->_outputMode !== 'csv') ? "<br/>" : ' ';
@@ -811,7 +756,7 @@ WHERE  civicrm_contribution_contribution_id={$row['civicrm_contribution_contribu
             $dao->civicrm_contact_id);
           $string = $string . ($string ? $separator : '') .
             "<a href='{$url}'>{$dao->civicrm_contact_sort_name}</a> " .
-            CRM_Utils_Money::format($dao->civicrm_contribution_total_amount_sum, $dao->civicrm_contribution_currency);
+            CRM_Utils_Money::format($dao->civicrm_contribution_total_amount, $dao->civicrm_contribution_currency);
         }
         $rows[$rowNum]['civicrm_contribution_soft_credits'] = $string;
       }
@@ -825,6 +770,7 @@ WHERE  civicrm_contribution_contribution_id={$row['civicrm_contribution_contribu
 SELECT civicrm_contact_id, civicrm_contact_sort_name
 FROM   civireport_contribution_detail_temp1
 WHERE  civicrm_contribution_contribution_id={$row['civicrm_contribution_contribution_id']}";
+        $this->addToDeveloperTab($query);
         $dao = CRM_Core_DAO::executeQuery($query);
         $string = '';
         while ($dao->fetch()) {
@@ -877,6 +823,12 @@ WHERE  civicrm_contribution_contribution_id={$row['civicrm_contribution_contribu
       // pull section aliases out of $this->_sections
       $sectionAliases = array_keys($this->_sections);
 
+      // hack alert - but it's tested so go forth & make pretty, or whack the new mole that popped up with gay abandon.
+      if (in_array('civicrm_contribution_total_amount', $this->_selectAliases)) {
+        $keyToHack = array_search('civicrm_contribution_total_amount', $this->_selectAliases);
+        $this->_selectAliases[$keyToHack] = 'civicrm_contribution_total_amount_sum';
+      }
+
       $ifnulls = array();
       foreach (array_merge($sectionAliases, $this->_selectAliases) as $alias) {
         $ifnulls[] = "ifnull($alias, '') as $alias";
@@ -904,6 +856,7 @@ WHERE  civicrm_contribution_contribution_id={$row['civicrm_contribution_contribu
       // initialize array of total counts
       $sumcontribs = $totals = array();
       $dao = CRM_Core_DAO::executeQuery($query);
+      $this->addToDeveloperTab($query);
       while ($dao->fetch()) {
 
         // let $this->_alterDisplay translate any integer ids to human-readable values.
@@ -979,6 +932,10 @@ WHERE  civicrm_contribution_contribution_id={$row['civicrm_contribution_contribu
       {$this->_aclFrom}
     ";
 
+    //Join temp table if report is filtered by group. This is specific to 'notin' operator and covered in unit test(ref dev/core#212)
+    if (!empty($this->_params['gid_op']) && $this->_params['gid_op'] == 'notin') {
+      $this->joinGroupTempTable('civicrm_contact', 'id', $this->_aliases['civicrm_contact']);
+    }
     $this->appendAdditionalFromJoins();
   }
 
@@ -991,16 +948,10 @@ WHERE  civicrm_contribution_contribution_id={$row['civicrm_contribution_contribu
               INNER JOIN (SELECT c.id, IF(COUNT(oc.id) = 0, 0, 1) AS ordinality FROM civicrm_contribution c LEFT JOIN civicrm_contribution oc ON c.contact_id = oc.contact_id AND oc.receive_date < c.receive_date GROUP BY c.id) {$this->_aliases['civicrm_contribution_ordinality']}
                       ON {$this->_aliases['civicrm_contribution_ordinality']}.id = {$this->_aliases['civicrm_contribution']}.id";
     }
-    $this->addPhoneFromClause();
+    $this->joinPhoneFromContact();
+    $this->joinAddressFromContact();
+    $this->joinEmailFromContact();
 
-    $this->addAddressFromClause();
-
-    if ($this->_emailField) {
-      $this->_from .= "
-            LEFT JOIN civicrm_email {$this->_aliases['civicrm_email']}
-                   ON {$this->_aliases['civicrm_contact']}.id = {$this->_aliases['civicrm_email']}.contact_id AND
-                      {$this->_aliases['civicrm_email']}.is_primary = 1\n";
-    }
     // include contribution note
     if (!empty($this->_params['fields']['contribution_note']) ||
       !empty($this->_params['note_value'])
