@@ -1,0 +1,16 @@
+// styling for header
+header.l-header {
+  background-color: $blk;
+  color: yellow;
+  a {
+    color: yellow;
+    font-family: cornerstoneregular, "sans-serif";
+    font-size: 1.5rem;
+  }
+  a:hover {
+    color: yellow;
+  }
+  .header-menu {
+    font-family: $opensans;
+  }
+}
