@@ -81,8 +81,14 @@ Configuration Management Workflow
 
 BLM 2020 is using the versioned staging approach to Configuration Management. The `config/staging` directory is versioned and committed to the `git` repository. The `config/active` directory is `.gitignore`d.
 
-Workflow:
-* All config changes are made on your local dev environment
+Workflow:  
+* All config changes are made on your local dev environment  
+* IMPORTANT: make sure to import configuration before you start to do any work.  If you do not, you could wipe out other's confguration work when you export config.  You can import configuraton here:  /admin/config/development/configuration  or use this command:
+
+```bash
+lando drush bcim
+```
+
 * Once you are satisfied with your changes export them
 
 ```bash
