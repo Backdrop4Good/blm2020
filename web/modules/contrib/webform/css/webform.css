@@ -1,0 +1,81 @@
+/**
+ * @file
+ * Front-end styling for the display of webforms.
+ */
+input.webform-calendar {
+  display: none;
+  padding: 3px;
+  vertical-align: top;
+}
+html.js input.webform-calendar {
+  display: inline;
+}
+.webform-container-inline label {
+  display: inline;
+  margin-right: 1em;
+}
+.webform-container-inline div,
+.webform-container-inline div.form-item {
+  display: inline;
+}
+.webform-container-inline div.description {
+  display: block;
+}
+.webform-container-inline div.messages {
+  display: block;
+  float: left;
+}
+.webform-container-inline div.ajax-progress-bar div {
+  display: inherit;
+}
+.webform-container-inline.webform-component-textarea label {
+  vertical-align: top;
+}
+.webform-container-inline.webform-component-textarea .form-textarea-wrapper {
+  display: inline-block;
+}
+.webform-component-textarea .grippie {
+  display: block;
+}
+.webform-progressbar {
+  width: 90%;
+  margin: 0 auto;
+  text-align: center;
+}
+.webform-progressbar-inner {
+  height: 1em;
+  background-color: #74c421;
+  height: 4px;
+}
+.webform-progressbar-outer {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  margin: 0.75em -1px 4em;
+  background-color: #dddddd;
+}
+.webform-progressbar-page {
+  position: absolute;
+  width: 23px;
+  height: 23px;
+  margin: -13px -4px;
+  border: 4px solid #aaaaaa;
+  box-shadow: 0 0 0 2px white;
+  background-color: white;
+  border-radius: 12px;
+}
+.webform-progressbar-page.completed {
+  background-color: #74c421;
+  border-color: #74c421;
+}
+.webform-progressbar-page.current {
+  border-color: #74c421;
+}
+.webform-progressbar-page .webform-progressbar-page-number {
+  display: none;
+}
+.webform-progressbar-page .webform-progressbar-page-label {
+  position: relative;
+  top: 20px;
+  margin: 0 -10em;
+}
