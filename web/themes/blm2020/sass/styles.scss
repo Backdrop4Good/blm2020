@@ -20,3 +20,125 @@
 @import "teasers";
 @import "vertical-tabs";
 @import "progress";
+
+/* Alpha overrides */
+header.l-header {
+  a.header-site-name-link {
+    background: none;
+    font-size: 1rem;
+    color: #fff;
+  }
+}
+
+html body:not(.toolbar) {
+  margin-top: 0 !important;
+}
+
+h1.page-title {
+  font-family: cornerstoneregular, "sans-serif";
+}
+
+.webform-client-form {
+  fieldset {
+    display: block;
+    .fieldset-wrapper {
+      padding: 1%; 
+      .form-item.nolabel {
+        margin: 0; 
+        label {
+          display: none;
+        }
+        .form-item {
+          label {
+            display: inline-block;
+          }
+        }
+      }
+    }
+    .webform-component-textfield, .webform-component-email {
+      display: inline-block;
+      width: 49%; 
+      input {
+        width: 95%; 
+      }
+    }
+    .webform-component-checkboxes, .webform-component-radios {
+      .form-item {
+        display: inline-block;
+        width: auto;
+        padding-right: 5%;
+        vertical-align: top;
+        label {
+          font-weight: normal;
+          max-width: 90%;
+          display: inline-block;
+          white-space: nowrap; 
+        }
+        input {
+          display: inline-block;
+          vertical-align: top;
+          margin-top: .5rem;
+        }
+      }
+    }
+    .webform-component-file {
+      label {
+        display: block;
+      }
+      .form-managed-file {
+        display: inline-block; 
+      }
+      .webform-component-file {
+        .description {
+          display: inline-block;
+          font-size: .8rem;
+          border: none;
+          vertical-align: top;
+          margin: 0;
+          padding-top: 0; 
+        }
+      }
+      label.compact-form-label {
+        font-weight: normal;
+        font-size: .9rem;
+        color: #777; 
+      }
+      .business-categories {
+        .form-item {
+          width: 24%;
+          padding-right: 1%; 
+          label {
+            white-space: normal; 
+          }
+        }
+      }
+    }
+  }
+}
+
+
+.view-businesses {
+  h2 {
+    font-weight: bold;
+    font-size: 1.2rem; 
+  }
+  i.fas {
+    padding: 3px; 
+  }
+  table th {
+    padding: 15px 5px;
+    border: none; 
+  }
+
+  /* Override Shoreditch top margin */
+  html body:not(.toolbar) {
+    margin-top: 0 !important; 
+  }
+
+  /* Override skin.css  */
+  header.l-header a.header-site-name-link {
+    background: none;
+    font-size: 1rem;
+    color: #fff; 
+  }
+}

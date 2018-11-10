@@ -2145,81 +2145,145 @@ abbr.tabledrag-changed {
 .vertical-tabs-pane.vertical-tab-selected > .vertical-tab-link .summary {
   display: none; }
 
-.webform-client-form fieldset .fieldset-wrapper {
-  padding: 1%; }
-  .webform-client-form fieldset .fieldset-wrapper .form-item.nolabel {
-    margin: 0; }
-    .webform-client-form fieldset .fieldset-wrapper .form-item.nolabel label {
-      display: none; }
-    .webform-client-form fieldset .fieldset-wrapper .form-item.nolabel .form-item label {
-      display: inline-block; }
+/**
+ * @file
+ * Progress Bar
+ *
+ * See system module
+ */
+.progress {
+  font-weight: bold; }
 
-.webform-client-form fieldset .webform-component-textfield, .webform-client-form fieldset .webform-component-email {
-  display: inline-block;
-  width: 49%; }
-  .webform-client-form fieldset .webform-component-textfield input, .webform-client-form fieldset .webform-component-email input {
-    width: 95%; }
+.progress .bar {
+  margin: 0 0.2em 0.5em 0;
+  border: 2px solid #e5e5e6;
+  border-radius: 3px;
+  overflow: hidden; }
 
-.webform-client-form fieldset .webform-component-checkboxes .form-item, .webform-client-form fieldset .webform-component-radios .form-item {
-  display: inline-block;
-  width: auto;
-  padding-right: 5%;
-  vertical-align: top; }
-  .webform-client-form fieldset .webform-component-checkboxes .form-item label, .webform-client-form fieldset .webform-component-radios .form-item label {
-    font-weight: normal;
-    max-width: 90%;
-    display: inline-block;
-    white-space: nowrap; }
-  .webform-client-form fieldset .webform-component-checkboxes .form-item input, .webform-client-form fieldset .webform-component-radios .form-item input {
-    display: inline-block;
-    vertical-align: top;
-    margin-top: .5rem; }
+.progress .filled {
+  position: relative;
+  overflow: hidden;
+  -webkit-transition: width 0.4s;
+  transition: width 0.4s;
+  will-change: width; }
 
-.webform-client-form fieldset .webform-component-file label {
-  display: block; }
+/* Progress Bar Animation */
+.progress .filled:after {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 0.75em;
+  height: 100%;
+  -webkit-transform: skewX(-20deg);
+  transform: skewX(-20deg);
+  border-left: 2em solid #3c4350;
+  border-right: 0.75em solid #3c4350;
+  -webkit-animation: progressGradient 3s infinite;
+  animation: progressGradient 1.5s infinite;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-transition: width 0.4s;
+  transition: width 0.4s;
+  will-change: left; }
 
-.webform-client-form fieldset .webform-component-file .form-managed-file {
-  display: inline-block; }
+@-webkit-keyframes progressGradient {
+  0% {
+    left: -15%;
+    border-left-width: 2em;
+    border-left-width: 0.75em; }
+  100% {
+    left: 100%;
+    border-left-width: 1.75em;
+    border-left-width: 0.5em; } }
 
-.webform-client-form fieldset .webform-component-file .description {
-  display: inline-block;
-  font-size: .8rem;
-  border: none;
-  vertical-align: top;
-  margin: 0;
-  padding-top: 0; }
+@keyframes progressGradient {
+  0% {
+    left: -15%;
+    border-left-width: 2em;
+    border-right-width: 0.75em; }
+  100% {
+    left: 100%;
+    border-left-width: 1.75em;
+    border-right-width: 0.5em; } }
 
-.webform-client-form fieldset label.compact-form-label {
-  font-weight: normal;
-  font-size: .9rem;
-  color: #777; }
-
-.webform-client-form fieldset .business-categories .form-item {
-  width: 24%;
-  padding-right: 1%; }
-  .webform-client-form fieldset .business-categories .form-item label {
-    white-space: normal; }
-
-.view-businesses h2 {
-  font-weight: bold;
-  font-size: 1.2rem; }
-
-.view-businesses i.fas {
-  padding: 3px; }
-
-.view-businesses table th {
-  padding: 15px 5px;
-  border: none; }
-
-/* Override Shoreditch top margin */
-html body:not(.toolbar) {
-  margin-top: 0 !important; }
-
-/* Override skin.css  */
+/* Alpha overrides */
 header.l-header a.header-site-name-link {
   background: none;
   font-size: 1rem;
   color: #fff; }
 
+html body:not(.toolbar) {
+  margin-top: 0 !important; }
+
 h1.page-title {
   font-family: cornerstoneregular, "sans-serif"; }
+
+.webform-client-form fieldset {
+  display: block; }
+  .webform-client-form fieldset .fieldset-wrapper {
+    padding: 1%; }
+    .webform-client-form fieldset .fieldset-wrapper .form-item.nolabel {
+      margin: 0; }
+      .webform-client-form fieldset .fieldset-wrapper .form-item.nolabel label {
+        display: none; }
+      .webform-client-form fieldset .fieldset-wrapper .form-item.nolabel .form-item label {
+        display: inline-block; }
+  .webform-client-form fieldset .webform-component-textfield, .webform-client-form fieldset .webform-component-email {
+    display: inline-block;
+    width: 49%; }
+    .webform-client-form fieldset .webform-component-textfield input, .webform-client-form fieldset .webform-component-email input {
+      width: 95%; }
+  .webform-client-form fieldset .webform-component-checkboxes .form-item, .webform-client-form fieldset .webform-component-radios .form-item {
+    display: inline-block;
+    width: auto;
+    padding-right: 5%;
+    vertical-align: top; }
+    .webform-client-form fieldset .webform-component-checkboxes .form-item label, .webform-client-form fieldset .webform-component-radios .form-item label {
+      font-weight: normal;
+      max-width: 90%;
+      display: inline-block;
+      white-space: nowrap; }
+    .webform-client-form fieldset .webform-component-checkboxes .form-item input, .webform-client-form fieldset .webform-component-radios .form-item input {
+      display: inline-block;
+      vertical-align: top;
+      margin-top: .5rem; }
+  .webform-client-form fieldset .webform-component-file label {
+    display: block; }
+  .webform-client-form fieldset .webform-component-file .form-managed-file {
+    display: inline-block; }
+  .webform-client-form fieldset .webform-component-file .webform-component-file .description {
+    display: inline-block;
+    font-size: .8rem;
+    border: none;
+    vertical-align: top;
+    margin: 0;
+    padding-top: 0; }
+  .webform-client-form fieldset .webform-component-file label.compact-form-label {
+    font-weight: normal;
+    font-size: .9rem;
+    color: #777; }
+  .webform-client-form fieldset .webform-component-file .business-categories .form-item {
+    width: 24%;
+    padding-right: 1%; }
+    .webform-client-form fieldset .webform-component-file .business-categories .form-item label {
+      white-space: normal; }
+
+.view-businesses {
+  /* Override Shoreditch top margin */
+  /* Override skin.css  */ }
+  .view-businesses h2 {
+    font-weight: bold;
+    font-size: 1.2rem; }
+  .view-businesses i.fas {
+    padding: 3px; }
+  .view-businesses table th {
+    padding: 15px 5px;
+    border: none; }
+  .view-businesses html body:not(.toolbar) {
+    margin-top: 0 !important; }
+  .view-businesses header.l-header a.header-site-name-link {
+    background: none;
+    font-size: 1rem;
+    color: #fff; }
