@@ -2221,7 +2221,10 @@ h1.page-title {
   font-family: cornerstoneregular, "sans-serif"; }
 
 .webform-client-form fieldset {
-  display: block; }
+  display: block;
+  border: none;
+  border-radius: 2px;
+  background-color: rgba(222, 226, 234, 0.2); }
   .webform-client-form fieldset .fieldset-wrapper {
     padding: 1%; }
     .webform-client-form fieldset .fieldset-wrapper .form-item.nolabel {
@@ -2253,21 +2256,21 @@ h1.page-title {
     display: block; }
   .webform-client-form fieldset .webform-component-file .form-managed-file {
     display: inline-block; }
-  .webform-client-form fieldset .webform-component-file .webform-component-file .description {
+  .webform-client-form fieldset .webform-component-file .description {
     display: inline-block;
     font-size: .8rem;
     border: none;
     vertical-align: top;
     margin: 0;
     padding-top: 0; }
-  .webform-client-form fieldset .webform-component-file label.compact-form-label {
+  .webform-client-form fieldset label.compact-form-label {
     font-weight: normal;
     font-size: .9rem;
     color: #777; }
-  .webform-client-form fieldset .webform-component-file .business-categories .form-item {
+  .webform-client-form fieldset .business-categories .form-item {
     width: 24%;
     padding-right: 1%; }
-    .webform-client-form fieldset .webform-component-file .business-categories .form-item label {
+    .webform-client-form fieldset .business-categories .form-item label {
       white-space: normal; }
 
 .view-businesses h2 {

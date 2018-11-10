@@ -41,6 +41,9 @@ h1.page-title {
 .webform-client-form {
   fieldset {
     display: block;
+    border: none;
+    border-radius: 2px;
+    background-color: rgba(222,226,234,.2);
     .fieldset-wrapper {
       padding: 1%; 
       .form-item.nolabel {
@@ -88,28 +91,26 @@ h1.page-title {
       .form-managed-file {
         display: inline-block; 
       }
-      .webform-component-file {
-        .description {
-          display: inline-block;
-          font-size: .8rem;
-          border: none;
-          vertical-align: top;
-          margin: 0;
-          padding-top: 0; 
-        }
+      .description {
+        display: inline-block;
+        font-size: .8rem;
+        border: none;
+        vertical-align: top;
+        margin: 0;
+        padding-top: 0; 
       }
-      label.compact-form-label {
-        font-weight: normal;
-        font-size: .9rem;
-        color: #777; 
-      }
-      .business-categories {
-        .form-item {
-          width: 24%;
-          padding-right: 1%; 
-          label {
-            white-space: normal; 
-          }
+    }
+    label.compact-form-label {
+      font-weight: normal;
+      font-size: .9rem;
+      color: #777; 
+    }
+    .business-categories {
+      .form-item {
+        width: 24%;
+        padding-right: 1%; 
+        label {
+          white-space: normal; 
         }
       }
     }
