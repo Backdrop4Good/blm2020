@@ -2270,20 +2270,35 @@ h1.page-title {
     .webform-client-form fieldset .webform-component-file .business-categories .form-item label {
       white-space: normal; }
 
-.view-businesses {
-  /* Override Shoreditch top margin */
-  /* Override skin.css  */ }
-  .view-businesses h2 {
-    font-weight: bold;
-    font-size: 1.2rem; }
-  .view-businesses i.fas {
-    padding: 3px; }
-  .view-businesses table th {
-    padding: 15px 5px;
-    border: none; }
-  .view-businesses html body:not(.toolbar) {
-    margin-top: 0 !important; }
-  .view-businesses header.l-header a.header-site-name-link {
-    background: none;
-    font-size: 1rem;
-    color: #fff; }
+.view-businesses h2 {
+  font-weight: bold;
+  font-size: 1.2rem; }
+
+.view-businesses i.fas {
+  padding: 3px; }
+
+.view-businesses table th {
+  padding: 15px 5px;
+  border: none; }
+
+.view-businesses table td.views-field-email {
+  min-width: 100px; }
+
+.view-businesses .view-filters {
+  background-color: #DADADB;
+  padding: 10px;
+  border-radius: 2px;
+  font-size: .8rem; }
+
+/* Override Shoreditch top margin */
+html body:not(.toolbar) {
+  margin-top: 0 !important; }
+
+/* Override skin.css  */
+header.l-header a.header-site-name-link {
+  background: none;
+  font-size: 1rem;
+  color: #fff; }
+
+.button, input.form-submit, input.button-primary, button.button-primary, .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+  background: #FF0000; }

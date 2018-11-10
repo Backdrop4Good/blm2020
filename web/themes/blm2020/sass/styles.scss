@@ -125,20 +125,34 @@ h1.page-title {
   i.fas {
     padding: 3px; 
   }
-  table th {
-    padding: 15px 5px;
-    border: none; 
+  table {
+    th {
+      padding: 15px 5px;
+      border: none; 
+    }
+    td.views-field-email {
+      min-width: 100px;
+    }
   }
+  .view-filters {
+    background-color: #DADADB;
+    padding: 10px;
+    border-radius: 2px;
+    font-size: .8rem;
+  }
+}
 
-  /* Override Shoreditch top margin */
-  html body:not(.toolbar) {
-    margin-top: 0 !important; 
-  }
+/* Override Shoreditch top margin */
+html body:not(.toolbar) {
+  margin-top: 0 !important; 
+}
 
-  /* Override skin.css  */
-  header.l-header a.header-site-name-link {
-    background: none;
-    font-size: 1rem;
-    color: #fff; 
-  }
+/* Override skin.css  */
+header.l-header a.header-site-name-link {
+  background: none;
+  font-size: 1rem;
+  color: #fff; 
+}
+.button, input.form-submit, input.button-primary, button.button-primary, .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+  background: #FF0000;
 }
