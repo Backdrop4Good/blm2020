@@ -1,4 +1,8 @@
 #mapid {
   height: 480px;
-  width: 877px;
+  width: 100%;
+}
+
+.page.front .l-header {
+  margin-bottom: 0;
 }

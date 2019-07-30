@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.7                                                |
+ | CiviCRM version 5                                                  |
  +--------------------------------------------------------------------+
  | This file is a part of CiviCRM.                                    |
  |                                                                    |
@@ -31,6 +31,7 @@
 class civicrm_handler_relationship_im extends civicrm_handler_relationship_location {
 
   static $_provider;
+
   public function construct() {
     parent::construct();
     if (!self::$_provider) {

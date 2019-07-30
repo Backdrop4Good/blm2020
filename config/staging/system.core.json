@@ -57,8 +57,8 @@
     "site_favicon_theme": 0,
     "site_favicon_path": "core/misc/favicon.ico",
     "site_favicon_mimetype": "image/vnd.microsoft.icon",
-    "site_frontpage": "home",
-    "site_name": "BLM 2020",
+    "site_frontpage": "directory",
+    "site_name": "Black Business Directory - Official Black Lives Matter Memphis",
     "site_logo_theme": 0,
     "site_logo_path": "",
     "site_mail": "noreply@lndo.site",
@@ -91,5 +91,11 @@
         4,
         5,
         6
-    ]
+    ],
+    "site_logo_attributes": {
+        "width": "",
+        "height": ""
+    },
+    "site_logo_upload": "",
+    "site_favicon_upload": ""
 }
