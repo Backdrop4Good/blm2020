@@ -60,7 +60,7 @@
     "site_frontpage": "directory",
     "site_name": "Black Business Directory - Official Black Lives Matter Memphis",
     "site_logo_theme": 0,
-    "site_logo_path": "",
+    "site_logo_path": "public://official-blm-memphis.jpg",
     "site_mail": "noreply@lndo.site",
     "site_slogan": "",
     "theme_default": "blm2020",
@@ -93,9 +93,10 @@
         6
     ],
     "site_logo_attributes": {
-        "width": "",
-        "height": ""
+        "width": 1266,
+        "height": 1266
     },
     "site_logo_upload": "",
-    "site_favicon_upload": ""
+    "site_favicon_upload": "",
+    "form_cache_expiration": 21600
 }

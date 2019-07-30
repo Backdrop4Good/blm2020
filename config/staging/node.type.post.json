@@ -27,7 +27,8 @@
         "menu_parent": "main-menu:0",
         "language": 0,
         "node_permissions": true,
-        "hidden_path": "0"
+        "hidden_path": "0",
+        "node_preview": "1"
     },
     "base": "node_content",
     "module": "node",

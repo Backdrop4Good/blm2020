@@ -37,7 +37,8 @@
         "node_user_picture": 1,
         "hidden_path": 0,
         "language": 0,
-        "node_permissions": true
+        "node_permissions": true,
+        "node_preview": "1"
     },
     "module": "node",
     "help": "",

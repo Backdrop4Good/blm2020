@@ -20,9 +20,7 @@
             "db319f4d-e1ed-4737-ad0d-13dee0836620",
             "01b39641-a93a-485c-874d-772b6e04c2a5"
         ],
-        "top": [
-            "51714fa1-fba6-4846-8700-d07fb201cd1e"
-        ],
+        "top": [],
         "content": [
             "e179b588-f153-4af2-8703-3afad5fb128f"
         ],
@@ -78,29 +76,6 @@
                     "contexts": []
                 },
                 "uuid": "01b39641-a93a-485c-874d-772b6e04c2a5",
-                "style": {
-                    "plugin": "default",
-                    "data": {
-                        "settings": {
-                            "classes": ""
-                        }
-                    }
-                }
-            }
-        },
-        "51714fa1-fba6-4846-8700-d07fb201cd1e": {
-            "plugin": "system:breadcrumb",
-            "data": {
-                "module": "system",
-                "delta": "breadcrumb",
-                "settings": {
-                    "title_display": "default",
-                    "title": "",
-                    "style": "default",
-                    "block_settings": [],
-                    "contexts": []
-                },
-                "uuid": "51714fa1-fba6-4846-8700-d07fb201cd1e",
                 "style": {
                     "plugin": "default",
                     "data": {

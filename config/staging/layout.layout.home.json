@@ -4,6 +4,7 @@
     "name": "home",
     "title": "Home page",
     "description": null,
+    "renderer_name": "standard",
     "module": "standard",
     "weight": 0,
     "storage": 2,

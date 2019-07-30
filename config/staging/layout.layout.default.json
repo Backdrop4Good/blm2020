@@ -21,7 +21,8 @@
             "13b2f325-af26-40bb-8c61-97fe1d93f19f"
         ],
         "top": [
-            "09f11b4e-877e-45ab-9000-a4c6254faa04"
+            "09f11b4e-877e-45ab-9000-a4c6254faa04",
+            "52f0a013-9df5-417b-b700-a5b69e94b968"
         ],
         "content": [
             "default"
@@ -109,6 +110,40 @@
                         }
                     }
                 }
+            }
+        },
+        "52f0a013-9df5-417b-b700-a5b69e94b968": {
+            "plugin": "blm2020_map:blm2020_map_mapblock",
+            "data": {
+                "module": "blm2020_map",
+                "delta": "blm2020_map_mapblock",
+                "settings": {
+                    "title_display": "none",
+                    "title": "",
+                    "style": "default",
+                    "block_settings": [],
+                    "contexts": []
+                },
+                "uuid": "52f0a013-9df5-417b-b700-a5b69e94b968",
+                "style": {
+                    "plugin": "default",
+                    "data": {
+                        "settings": {
+                            "classes": ""
+                        }
+                    }
+                },
+                "conditions": [
+                    {
+                        "plugin": "front",
+                        "data": {
+                            "settings": {
+                                "negate": false,
+                                "load_condition_nojs": "Load condition"
+                            }
+                        }
+                    }
+                ]
             }
         },
         "default": {
