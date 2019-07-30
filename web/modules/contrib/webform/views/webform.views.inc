@@ -675,7 +675,7 @@ function _webform_views_options_form(&$form, &$form_state, $nid, $cid) {
     '#title' => t('Webform node'),
     '#default_value' => isset($node) ? $node->title . ' [nid:' . $node->nid . ']' : '',
     '#ajax' => array(
-      'path' => views_ui_build_form_url($form_state),
+      'path' => views_ui_build_form_path($form_state),
       'event' => 'blur',
     ),
     '#autocomplete_path' => 'webform/autocomplete',
@@ -694,7 +694,10 @@ function _webform_views_options_form(&$form, &$form_state, $nid, $cid) {
     $type_options[$key] = check_plain($component['label']);
   }
 
-  $options = webform_component_list($node, NULL, 'path', TRUE);
+  $options = array();
+  if (isset($node->webform['components'])) {
+    $options = webform_component_list($node, NULL, 'path', TRUE);
+  }
   $form['webform_cid'] = array(
     '#title' => t('Component data'),
     '#type' => 'select',

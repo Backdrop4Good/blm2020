@@ -43,8 +43,6 @@ function webform_civicrm_autoload_info() {
 
 define('WEBFORM_CIVICRM_DEFAULT_CONTACT_ID', 1);
 
-define('WEBFORM_CIVICRM_DEFAULT_CONTACT_ID', 1);
-
 /**
  * Implements hook_menu().
  *

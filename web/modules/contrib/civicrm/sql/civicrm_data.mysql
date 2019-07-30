@@ -1,7 +1,7 @@
 -- +--------------------------------------------------------------------+
 -- | CiviCRM version 5                                                  |
 -- +--------------------------------------------------------------------+
--- | Copyright CiviCRM LLC (c) 2004-2018                                |
+-- | Copyright CiviCRM LLC (c) 2004-2019                                |
 -- +--------------------------------------------------------------------+
 -- | This file is a part of CiviCRM.                                    |
 -- |                                                                    |
@@ -243,7 +243,7 @@ INSERT INTO civicrm_country (id, name,iso_code,region_id,is_province_abbreviated
 INSERT INTO civicrm_country (id, name,iso_code,region_id,is_province_abbreviated) VALUES("1200", "Sudan", "SD", "3", "0");
 INSERT INTO civicrm_country (id, name,iso_code,region_id,is_province_abbreviated) VALUES("1201", "Suriname", "SR", "2", "0");
 INSERT INTO civicrm_country (id, name,iso_code,region_id,is_province_abbreviated) VALUES("1202", "Svalbard and Jan Mayen", "SJ", "1", "0");
-INSERT INTO civicrm_country (id, name,iso_code,region_id,is_province_abbreviated) VALUES("1203", "Swaziland", "SZ", "5", "0");
+INSERT INTO civicrm_country (id, name,iso_code,region_id,is_province_abbreviated) VALUES("1203", "Eswatini", "SZ", "5", "0");
 INSERT INTO civicrm_country (id, name,iso_code,region_id,is_province_abbreviated) VALUES("1204", "Sweden", "SE", "1", "0");
 INSERT INTO civicrm_country (id, name,iso_code,region_id,is_province_abbreviated) VALUES("1205", "Switzerland", "CH", "1", "0");
 INSERT INTO civicrm_country (id, name,iso_code,region_id,is_province_abbreviated) VALUES("1206", "Syrian Arab Republic", "SY", "3", "0");
@@ -297,7 +297,7 @@ INSERT INTO civicrm_country (id, name,iso_code,region_id,is_province_abbreviated
 -- +--------------------------------------------------------------------+
 -- | CiviCRM version 5                                                  |
 -- +--------------------------------------------------------------------+
--- | Copyright CiviCRM LLC (c) 2004-2018                                |
+-- | Copyright CiviCRM LLC (c) 2004-2019                                |
 -- +--------------------------------------------------------------------+
 -- | This file is a part of CiviCRM.                                    |
 -- |                                                                    |
@@ -4423,7 +4423,7 @@ INSERT INTO civicrm_state_province (id, country_id, abbreviation, name) VALUES
 -- +--------------------------------------------------------------------+
 -- | CiviCRM version 5                                                  |
 -- +--------------------------------------------------------------------+
--- | Copyright CiviCRM LLC (c) 2004-2018                                |
+-- | Copyright CiviCRM LLC (c) 2004-2019                                |
 -- +--------------------------------------------------------------------+
 -- | This file is a part of CiviCRM.                                    |
 -- |                                                                    |
@@ -4595,7 +4595,7 @@ INSERT INTO civicrm_currency (id, name, symbol, numeric_code, full_name) VALUES
 (145, "STD", NULL, "678", "São Tome and Principe Dobra"),
 (146, "SVC",  "$", "222", "El Salvador Colon"),
 (147, "SYP",  "£", "760", "Syrian Pound"),
-(148, "SZL", NULL, "748", "Swaziland Lilangeni"),
+(148, "SZL", NULL, "748", "Eswatini Lilangeni"),
 (149, "TJS", NULL, "972", "Tajik Somoni"),
 (150, "TMM", NULL, "795", "Turkmenistan Manat"),
 (151, "TND", NULL, "788", "Tunisian Dinar"),
@@ -4636,7 +4636,7 @@ INSERT INTO civicrm_currency (id, name, symbol, numeric_code, full_name) VALUES
 -- +--------------------------------------------------------------------+
 -- | CiviCRM version 5                                                  |
 -- +--------------------------------------------------------------------+
--- | Copyright CiviCRM LLC (c) 2004-2018                                |
+-- | Copyright CiviCRM LLC (c) 2004-2019                                |
 -- +--------------------------------------------------------------------+
 -- | This file is a part of CiviCRM.                                    |
 -- |                                                                    |
@@ -4836,6 +4836,7 @@ VALUES
    ('wysiwyg_presets'               , 'WYSIWYG Editor Presets'             , NULL, 1, 1, 0),
    ('relative_date_filters'         , 'Relative Date Filters'              , NULL, 1, 1, 0),
    ('pledge_status'                 , 'Pledge Status'                      , NULL, 1, 1, 1),
+   ('contribution_recur_status'     , 'Recurring Contribution Status'      , NULL, 1, 1, 1),
    ('environment'                   , 'Environment'                        , NULL, 1, 1, 0),
    ('activity_default_assignee'     , 'Activity default assignee'          , NULL, 1, 1, 0);
 
@@ -4918,6 +4919,7 @@ SELECT @option_group_id_contactDateMode := max(id) from civicrm_option_group whe
 SELECT @option_group_id_date_filter    := max(id) from civicrm_option_group where name = 'relative_date_filters';
 SELECT @option_group_id_wysiwyg_presets    := max(id) from civicrm_option_group where name = 'wysiwyg_presets';
 SELECT @option_group_id_ps    := max(id) from civicrm_option_group where name = 'pledge_status';
+SELECT @option_group_id_crs    := max(id) from civicrm_option_group where name = 'contribution_recur_status';
 SELECT @option_group_id_env    := max(id) from civicrm_option_group where name = 'environment';
 SELECT @option_group_id_default_assignee := max(id) from civicrm_option_group where name = 'activity_default_assignee';
 
@@ -5298,6 +5300,7 @@ VALUES
   (@option_group_id_sfe, 'docx', 12, 'docx',  NULL, 0, 0, 12, NULL, 0, 0, 1, NULL, NULL, NULL),
   (@option_group_id_sfe, 'xlsx', 13, 'xlsx',  NULL, 0, 0, 13, NULL, 0, 0, 1, NULL, NULL, NULL),
   (@option_group_id_sfe, 'odt',  14, 'odt',   NULL, 0, 0, 14, NULL, 0, 0, 1, NULL, NULL, NULL),
+  (@option_group_id_sfe, 'ics',  15, 'ics',   NULL, 0, 0, 15, NULL, 0, 0, 1, NULL, NULL, NULL),
 
   (@option_group_id_we, 'Textarea', 1, 'Textarea', NULL, 0, NULL, 1, NULL, 0, 1, 1, NULL, NULL, NULL),
   (@option_group_id_we, 'CKEditor', 2, 'CKEditor', NULL, 0, NULL, 2, NULL, 0, 1, 1, NULL, NULL, NULL),
@@ -5610,9 +5613,9 @@ VALUES
    (@option_group_id_date_filter, 'Previous fiscal year', 'previous.fiscal_year', 'previous.fiscal_year', NULL, NULL, NULL,11, NULL, 0, 0, 1, NULL, NULL, NULL),
    (@option_group_id_date_filter, 'Previous calendar year', 'previous.year', 'previous.year', NULL, NULL, NULL,12, NULL, 0, 0, 1, NULL, NULL, NULL),
    (@option_group_id_date_filter, 'Last 7 days including today', 'ending.week', 'ending.week', NULL, NULL, NULL,13, NULL, 0, 0, 1, NULL, NULL, NULL),
-   (@option_group_id_date_filter, 'Last 30 days including today', 'ending.month', 'ending.month', NULL, NULL, NULL,14, NULL, 0, 0, 1, NULL, NULL, NULL),
-   (@option_group_id_date_filter, 'Last 60 days including today', 'ending_2.month', 'ending_2.month', NULL, NULL, NULL,15, NULL, 0, 0, 1, NULL, NULL, NULL),
-   (@option_group_id_date_filter, 'Last 90 days including today', 'ending.quarter', 'ending.quarter', NULL, NULL, NULL,16, NULL, 0, 0, 1, NULL, NULL, NULL),
+   (@option_group_id_date_filter, 'Last 30 days including today', 'ending_30.day', 'ending.month', NULL, NULL, NULL,14, NULL, 0, 0, 1, NULL, NULL, NULL),
+   (@option_group_id_date_filter, 'Last 60 days including today', 'ending_60.day', 'ending_2.month', NULL, NULL, NULL,15, NULL, 0, 0, 1, NULL, NULL, NULL),
+   (@option_group_id_date_filter, 'Last 90 days including today', 'ending_90.day', 'ending.quarter', NULL, NULL, NULL,16, NULL, 0, 0, 1, NULL, NULL, NULL),
    (@option_group_id_date_filter, 'Last 12 months including today', 'ending.year', 'ending.year', NULL, NULL, NULL,17, NULL, 0, 0, 1, NULL, NULL, NULL),
    (@option_group_id_date_filter, 'Last 2 years including today', 'ending_2.year', 'ending_2.year', NULL, NULL, NULL,18, NULL, 0, 0, 1, NULL, NULL, NULL),
    (@option_group_id_date_filter, 'Last 3 years including today', 'ending_3.year', 'ending_3.year', NULL, NULL, NULL,19, NULL, 0, 0, 1, NULL, NULL, NULL),
@@ -5666,6 +5669,17 @@ VALUES
   (@option_group_id_ps, 'Cancelled'  , 3, 'Cancelled'  , NULL, 0, NULL, 3, NULL, 0, 1, 1, NULL, NULL, NULL),
   (@option_group_id_ps, 'In Progress', 5, 'In Progress', NULL, 0, NULL, 4, NULL, 0, 1, 1, NULL, NULL, NULL),
   (@option_group_id_ps, 'Overdue'    , 6, 'Overdue'    , NULL, 0, NULL, 5, NULL, 0, 1, 1, NULL, NULL, NULL),
+
+
+-- Contribution Recur Status
+  (@option_group_id_crs, 'Completed'  , 1, 'Completed'  , NULL, 0, NULL, 1, NULL, 0, 1, 1, NULL, NULL, NULL),
+  (@option_group_id_crs, 'Pending'    , 2, 'Pending'    , NULL, 0, NULL, 2, NULL, 0, 1, 1, NULL, NULL, NULL),
+  (@option_group_id_crs, 'Cancelled'  , 3, 'Cancelled'  , NULL, 0, NULL, 3, NULL, 0, 1, 1, NULL, NULL, NULL),
+  (@option_group_id_crs, 'Failed'     , 4, 'Failed'     , NULL, 0, NULL, 4, NULL, 0, 1, 1, NULL, NULL, NULL),
+  (@option_group_id_crs, 'In Progress', 5, 'In Progress', NULL, 0, NULL, 5, NULL, 0, 1, 1, NULL, NULL, NULL),
+  (@option_group_id_crs, 'Overdue'    , 6, 'Overdue'    , NULL, 0, NULL, 6, NULL, 0, 1, 1, NULL, NULL, NULL),
+  (@option_group_id_crs, 'Processing' , 7, 'Processing' , NULL, 0, NULL, 7, NULL, 0, 1, 1, NULL, NULL, NULL),
+  (@option_group_id_crs, 'Failing'    , 8, 'Failing'    , NULL, 0, NULL, 8, NULL, 0, 1, 1, NULL, NULL, NULL),
 
 -- CiviCase - Activity Assignee Default
 --  (`option_group_id`,             `label`,                                                `value`, `name`,                    `grouping`, `filter`, `is_default`, `weight`, `description`, `is_optgroup`, `is_reserved`, `is_active`, `component_id`, `visibility_id`, `icon`)
@@ -6208,7 +6222,7 @@ INSERT INTO civicrm_mailing_bounce_pattern
     (@bounceTypeID, 'unknown( or illegal)? user( account)?'),
     (@bounceTypeID, 'unrecognized recipient'),
     (@bounceTypeID, 'unregistered address'),
-    (@bounceTypeID, 'user (unknown|does not exist)'),
+    (@bounceTypeID, 'user (unknown|(does not|doesn\'t) exist)'),
     (@bounceTypeID, 'user doesn\'t have an? \w+ account'),
     (@bounceTypeID, 'user(\'s e-?mail name is)? not found'),
     (@bounceTypeID, '^Validation failed for:'),
@@ -6484,7 +6498,7 @@ INSERT INTO `civicrm_contact_type`
 -- +--------------------------------------------------------------------+
 -- | CiviCRM version 5                                                  |
 -- +--------------------------------------------------------------------+
--- | Copyright CiviCRM LLC (c) 2004-2018                                |
+-- | Copyright CiviCRM LLC (c) 2004-2019                                |
 -- +--------------------------------------------------------------------+
 -- | This file is a part of CiviCRM.                                    |
 -- |                                                                    |
@@ -8013,10 +8027,15 @@ INSERT INTO civicrm_msg_template
 {ts}Transaction #{/ts}: {$trxn_id}
 {/if}
 
-{if $is_recur and ($contributeMode eq \'notify\' or $contributeMode eq \'directIPN\')}
-{ts}This is a recurring contribution. You can cancel future contributions at:{/ts}
+{if $is_recur}
+{ts}This is a recurring contribution.{/ts}
+
+{if $cancelSubscriptionUrl}
+{ts}You can cancel future contributions at:{/ts}
 
 {$cancelSubscriptionUrl}
+
+{/if}
 
 {if $updateSubscriptionBillingUrl}
 {ts}You can update billing details for this recurring contribution at:{/ts}
@@ -8024,10 +8043,13 @@ INSERT INTO civicrm_msg_template
 {$updateSubscriptionBillingUrl}
 
 {/if}
+
+{if $updateSubscriptionUrl}
 {ts}You can update recurring contribution amount or change the number of installments for this recurring contribution at:{/ts}
 
 {$updateSubscriptionUrl}
 
+{/if}
 {/if}
 
 {if $honor_block_is_active}
@@ -8347,27 +8369,30 @@ INSERT INTO civicrm_msg_template
       </tr>
      {/if}
 
-     {if $is_recur}
-      {if $contributeMode eq \'notify\' or $contributeMode eq \'directIPN\'}
-       <tr>
+    {if $is_recur}
+      <tr>
         <td  colspan="2" {$labelStyle}>
-         {ts 1=$cancelSubscriptionUrl}This is a recurring contribution. You can cancel future contributions by <a href="%1">visiting this web page</a>.{/ts}
+          {ts}This is a recurring contribution.{/ts}
+          {if $cancelSubscriptionUrl}
+            {ts 1=$cancelSubscriptionUrl}You can cancel future contributions by <a href="%1">visiting this web page</a>.{/ts}
+          {/if}
         </td>
-        {if $updateSubscriptionBillingUrl}
-         </tr>
-         <tr>
-         <td colspan="2" {$labelStyle}>
-          {ts 1=$updateSubscriptionBillingUrl}You can update billing details for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
-         </td>
-        {/if}
-       </tr>
-       <tr>
-        <td colspan="2" {$labelStyle}>
-         {ts 1=$updateSubscriptionUrl}You can update recurring contribution amount or change the number of installments for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
-        </td>
-       </tr>
+      </tr>
+      {if $updateSubscriptionBillingUrl}
+        <tr>
+          <td colspan="2" {$labelStyle}>
+            {ts 1=$updateSubscriptionBillingUrl}You can update billing details for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
+          </td>
+        </tr>
       {/if}
-     {/if}
+      {if $updateSubscriptionUrl}
+        <tr>
+          <td colspan="2" {$labelStyle}>
+            {ts 1=$updateSubscriptionUrl}You can update recurring contribution amount or change the number of installments for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
+          </td>
+        </tr>
+      {/if}
+    {/if}
 
      {if $honor_block_is_active}
       <tr>
@@ -8698,10 +8723,15 @@ INSERT INTO civicrm_msg_template
 {ts}Transaction #{/ts}: {$trxn_id}
 {/if}
 
-{if $is_recur and ($contributeMode eq \'notify\' or $contributeMode eq \'directIPN\')}
-{ts}This is a recurring contribution. You can cancel future contributions at:{/ts}
+{if $is_recur}
+{ts}This is a recurring contribution.{/ts}
+
+{if $cancelSubscriptionUrl}
+{ts}You can cancel future contributions at:{/ts}
 
 {$cancelSubscriptionUrl}
+
+{/if}
 
 {if $updateSubscriptionBillingUrl}
 {ts}You can update billing details for this recurring contribution at:{/ts}
@@ -8709,10 +8739,13 @@ INSERT INTO civicrm_msg_template
 {$updateSubscriptionBillingUrl}
 
 {/if}
+
+{if $updateSubscriptionUrl}
 {ts}You can update recurring contribution amount or change the number of installments for this recurring contribution at:{/ts}
 
 {$updateSubscriptionUrl}
 
+{/if}
 {/if}
 
 {if $honor_block_is_active}
@@ -9032,27 +9065,30 @@ INSERT INTO civicrm_msg_template
       </tr>
      {/if}
 
-     {if $is_recur}
-      {if $contributeMode eq \'notify\' or $contributeMode eq \'directIPN\'}
-       <tr>
+    {if $is_recur}
+      <tr>
         <td  colspan="2" {$labelStyle}>
-         {ts 1=$cancelSubscriptionUrl}This is a recurring contribution. You can cancel future contributions by <a href="%1">visiting this web page</a>.{/ts}
+          {ts}This is a recurring contribution.{/ts}
+          {if $cancelSubscriptionUrl}
+            {ts 1=$cancelSubscriptionUrl}You can cancel future contributions by <a href="%1">visiting this web page</a>.{/ts}
+          {/if}
         </td>
-        {if $updateSubscriptionBillingUrl}
-         </tr>
-         <tr>
-         <td colspan="2" {$labelStyle}>
-          {ts 1=$updateSubscriptionBillingUrl}You can update billing details for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
-         </td>
-        {/if}
-       </tr>
-       <tr>
-        <td colspan="2" {$labelStyle}>
-         {ts 1=$updateSubscriptionUrl}You can update recurring contribution amount or change the number of installments for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
-        </td>
-       </tr>
+      </tr>
+      {if $updateSubscriptionBillingUrl}
+        <tr>
+          <td colspan="2" {$labelStyle}>
+            {ts 1=$updateSubscriptionBillingUrl}You can update billing details for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
+          </td>
+        </tr>
       {/if}
-     {/if}
+      {if $updateSubscriptionUrl}
+        <tr>
+          <td colspan="2" {$labelStyle}>
+            {ts 1=$updateSubscriptionUrl}You can update recurring contribution amount or change the number of installments for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
+          </td>
+        </tr>
+      {/if}
+    {/if}
 
      {if $honor_block_is_active}
       <tr>
@@ -10271,7 +10307,10 @@ INSERT INTO civicrm_msg_template
 
 {ts 1=$recur_frequency_interval 2=$recur_frequency_unit}This membership will be automatically renewed every %1 %2(s).{/ts}
 
-{ts 1=$cancelSubscriptionUrl}This membership will be renewed automatically. You can cancel the auto-renewal option by <a href="%1">visiting this web page</a>.{/ts}
+{if $cancelSubscriptionUrl}
+{ts 1=$cancelSubscriptionUrl}You can cancel the auto-renewal option by <a href="%1">visiting this web page</a>.{/ts}
+
+{/if}
 
 {if $updateSubscriptionBillingUrl}
 {ts 1=$updateSubscriptionBillingUrl}You can update billing details for this automatically renewed membership by <a href="%1">visiting this web page</a>.{/ts}
@@ -10285,13 +10324,20 @@ INSERT INTO civicrm_msg_template
 
 {ts}Start Date{/ts}:  {$recur_start_date|crmDate}
 
+{if $cancelSubscriptionUrl}
 {ts 1=$cancelSubscriptionUrl}You can cancel the recurring contribution option by <a href="%1">visiting this web page</a>.{/ts}
+
+{/if}
 
 {if $updateSubscriptionBillingUrl}
 {ts 1=$updateSubscriptionBillingUrl}You can update billing details for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
 
 {/if}
+
+{if $updateSubscriptionUrl}
 {ts 1=$updateSubscriptionUrl}You can update recurring contribution amount or change the number of installments for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
+
+{/if}
 {/if}
 
 {elseif $recur_txnType eq \'END\'}
@@ -10355,11 +10401,13 @@ INSERT INTO civicrm_msg_template
          <p>{ts 1=$recur_frequency_interval 2=$recur_frequency_unit}This membership will be automatically renewed every %1 %2(s). {/ts}</p>
         </td>
        </tr>
+       {if $cancelSubscriptionUrl}
        <tr>
-        <td {$labelStyle}>
-         {ts 1=$cancelSubscriptionUrl}This membership will be renewed automatically. You can cancel the auto-renewal option by <a href="%1">visiting this web page</a>.{/ts}
-        </td>
+         <td {$labelStyle}>
+           {ts 1=$cancelSubscriptionUrl}You can cancel the auto-renewal option by <a href="%1">visiting this web page</a>.{/ts}
+         </td>
        </tr>
+       {/if}
        {if $updateSubscriptionBillingUrl}
          <tr>
           <td {$labelStyle}>
@@ -10375,23 +10423,27 @@ INSERT INTO civicrm_msg_template
         <p>{ts}Start Date{/ts}: {$recur_start_date|crmDate}</p>
        </td>
       </tr>
+      {if $cancelSubscriptionUrl}
       <tr>
         <td {$labelStyle}>
-         {ts 1=$cancelSubscriptionUrl} You can cancel the recurring contribution option by <a href="%1">visiting this web page</a>.{/ts}
+          {ts 1=$cancelSubscriptionUrl} You can cancel the recurring contribution option by <a href="%1">visiting this web page</a>.{/ts}
         </td>
       </tr>
+      {/if}
       {if $updateSubscriptionBillingUrl}
         <tr>
           <td {$labelStyle}>
-           {ts 1=$updateSubscriptionBillingUrl}You can update billing details for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
+            {ts 1=$updateSubscriptionBillingUrl}You can update billing details for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
           </td>
         </tr>
       {/if}
+      {if $updateSubscriptionUrl}
       <tr>
         <td {$labelStyle}>
-   {ts 1=$updateSubscriptionUrl}You can update recurring contribution amount or change the number of installments details for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
+          {ts 1=$updateSubscriptionUrl}You can update recurring contribution amount or change the number of installments details for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
         </td>
-       </tr>
+      </tr>
+      {/if}
      {/if}
 
     {elseif $recur_txnType eq \'END\'}
@@ -10456,7 +10508,10 @@ INSERT INTO civicrm_msg_template
 
 {ts 1=$recur_frequency_interval 2=$recur_frequency_unit}This membership will be automatically renewed every %1 %2(s).{/ts}
 
-{ts 1=$cancelSubscriptionUrl}This membership will be renewed automatically. You can cancel the auto-renewal option by <a href="%1">visiting this web page</a>.{/ts}
+{if $cancelSubscriptionUrl}
+{ts 1=$cancelSubscriptionUrl}You can cancel the auto-renewal option by <a href="%1">visiting this web page</a>.{/ts}
+
+{/if}
 
 {if $updateSubscriptionBillingUrl}
 {ts 1=$updateSubscriptionBillingUrl}You can update billing details for this automatically renewed membership by <a href="%1">visiting this web page</a>.{/ts}
@@ -10470,13 +10525,20 @@ INSERT INTO civicrm_msg_template
 
 {ts}Start Date{/ts}:  {$recur_start_date|crmDate}
 
+{if $cancelSubscriptionUrl}
 {ts 1=$cancelSubscriptionUrl}You can cancel the recurring contribution option by <a href="%1">visiting this web page</a>.{/ts}
+
+{/if}
 
 {if $updateSubscriptionBillingUrl}
 {ts 1=$updateSubscriptionBillingUrl}You can update billing details for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
 
 {/if}
+
+{if $updateSubscriptionUrl}
 {ts 1=$updateSubscriptionUrl}You can update recurring contribution amount or change the number of installments for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
+
+{/if}
 {/if}
 
 {elseif $recur_txnType eq \'END\'}
@@ -10540,11 +10602,13 @@ INSERT INTO civicrm_msg_template
          <p>{ts 1=$recur_frequency_interval 2=$recur_frequency_unit}This membership will be automatically renewed every %1 %2(s). {/ts}</p>
         </td>
        </tr>
+       {if $cancelSubscriptionUrl}
        <tr>
-        <td {$labelStyle}>
-         {ts 1=$cancelSubscriptionUrl}This membership will be renewed automatically. You can cancel the auto-renewal option by <a href="%1">visiting this web page</a>.{/ts}
-        </td>
+         <td {$labelStyle}>
+           {ts 1=$cancelSubscriptionUrl}You can cancel the auto-renewal option by <a href="%1">visiting this web page</a>.{/ts}
+         </td>
        </tr>
+       {/if}
        {if $updateSubscriptionBillingUrl}
          <tr>
           <td {$labelStyle}>
@@ -10560,23 +10624,27 @@ INSERT INTO civicrm_msg_template
         <p>{ts}Start Date{/ts}: {$recur_start_date|crmDate}</p>
        </td>
       </tr>
+      {if $cancelSubscriptionUrl}
       <tr>
         <td {$labelStyle}>
-         {ts 1=$cancelSubscriptionUrl} You can cancel the recurring contribution option by <a href="%1">visiting this web page</a>.{/ts}
+          {ts 1=$cancelSubscriptionUrl} You can cancel the recurring contribution option by <a href="%1">visiting this web page</a>.{/ts}
         </td>
       </tr>
+      {/if}
       {if $updateSubscriptionBillingUrl}
         <tr>
           <td {$labelStyle}>
-           {ts 1=$updateSubscriptionBillingUrl}You can update billing details for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
+            {ts 1=$updateSubscriptionBillingUrl}You can update billing details for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
           </td>
         </tr>
       {/if}
+      {if $updateSubscriptionUrl}
       <tr>
         <td {$labelStyle}>
-   {ts 1=$updateSubscriptionUrl}You can update recurring contribution amount or change the number of installments details for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
+          {ts 1=$updateSubscriptionUrl}You can update recurring contribution amount or change the number of installments details for this recurring contribution by <a href="%1">visiting this web page</a>.{/ts}
         </td>
-       </tr>
+      </tr>
+      {/if}
      {/if}
 
     {elseif $recur_txnType eq \'END\'}
@@ -11843,14 +11911,12 @@ INSERT INTO civicrm_msg_template
 ', @tpl_ovid_pcp_owner_notify, 0,          1) ,      
       
       
-      ('Additional Payment Receipt or Refund Notification', '{if $isRefund}{ts}Refund Notification{/ts}{else}{ts}Payment Receipt{/ts}{/if} - {if $component eq \'event\'}{$event.title}{/if}', 'Dear {$contactDisplayName}
-{if $isRefund}
+      ('Additional Payment Receipt or Refund Notification', '{if $isRefund}{ts}Refund Notification{/ts}{else}{ts}Payment Receipt{/ts}{/if} - {if $component eq \'event\'}{$event.title}{/if}', '{if $emailGreeting}{$emailGreeting},
+{/if}{if $isRefund}
 {ts}A refund has been issued based on changes in your registration selections.{/ts}
 {else}
 {ts}A payment has been received.{/ts}
 {/if}
-
-{ts}Please print this confirmation for your records.{/ts}
 
 {if $isRefund}
 ===============================================================================
@@ -11891,7 +11957,7 @@ INSERT INTO civicrm_msg_template
 {if $checkNumber}
 {ts}Check Number{/ts}: {$checkNumber}
 {/if}
-{if $contributeMode eq \'direct\' and !$isAmountzero}
+{if $billingName || $address}
 
 ===============================================================================
 
@@ -11903,7 +11969,7 @@ INSERT INTO civicrm_msg_template
 {$address}
 {/if}
 
-{if $contributeMode eq \'direct\' and !$isAmountzero}
+{if $credit_card_number}
 ===========================================================
 {ts}Credit Card Information{/ts}
 
@@ -11959,7 +12025,6 @@ INSERT INTO civicrm_msg_template
 {capture assign=emptyBlockStyle }style="padding: 10px; border-bottom: 1px solid #999;background-color: #f7f7f7;"{/capture}
 {capture assign=emptyBlockValueStyle }style="padding: 10px; border-bottom: 1px solid #999;"{/capture}
 
-<p>Dear {$contactDisplayName}</p>
 <center>
  <table width="620" border="0" cellpadding="0" cellspacing="0" id="crm-event_receipt" style="font-family: Arial, Verdana, sans-serif; text-align: left;">
 
@@ -11968,7 +12033,7 @@ INSERT INTO civicrm_msg_template
   <!-- END HEADER -->
 
   <!-- BEGIN CONTENT -->
-
+   {if $emailGreeting}<tr><td>{$emailGreeting},</td></tr>{/if}
   <tr>
     <td>
       {if $isRefund}
@@ -11976,7 +12041,6 @@ INSERT INTO civicrm_msg_template
       {else}
       <p>{ts}A payment has been received.{/ts}</p>
       {/if}
-      <p>{ts}Please print this confirmation for your records.{/ts}</p>
     </td>
   </tr>
   <tr>
@@ -12094,7 +12158,7 @@ INSERT INTO civicrm_msg_template
     <tr>
       <td>
   <table style="border: 1px solid #999; margin: 1em 0em 1em; border-collapse: collapse; width:100%;">
-    {if $contributeMode eq \'direct\' and !$isAmountzero}
+    {if $billingName || $address}
           <tr>
             <th {$headerStyle}>
         {ts}Billing Name and Address{/ts}
@@ -12107,7 +12171,7 @@ INSERT INTO civicrm_msg_template
             </td>
           </tr>
     {/if}
-    {if $contributeMode eq\'direct\' and !$isAmountzero}
+    {if $credit_card_number}
           <tr>
             <th {$headerStyle}>
         {ts}Credit Card Information{/ts}
@@ -12199,14 +12263,12 @@ INSERT INTO civicrm_msg_template
  </body>
 </html>
 ', @tpl_ovid_payment_or_refund_notification, 1,          0),
-      ('Additional Payment Receipt or Refund Notification', '{if $isRefund}{ts}Refund Notification{/ts}{else}{ts}Payment Receipt{/ts}{/if} - {if $component eq \'event\'}{$event.title}{/if}', 'Dear {$contactDisplayName}
-{if $isRefund}
+      ('Additional Payment Receipt or Refund Notification', '{if $isRefund}{ts}Refund Notification{/ts}{else}{ts}Payment Receipt{/ts}{/if} - {if $component eq \'event\'}{$event.title}{/if}', '{if $emailGreeting}{$emailGreeting},
+{/if}{if $isRefund}
 {ts}A refund has been issued based on changes in your registration selections.{/ts}
 {else}
 {ts}A payment has been received.{/ts}
 {/if}
-
-{ts}Please print this confirmation for your records.{/ts}
 
 {if $isRefund}
 ===============================================================================
@@ -12247,7 +12309,7 @@ INSERT INTO civicrm_msg_template
 {if $checkNumber}
 {ts}Check Number{/ts}: {$checkNumber}
 {/if}
-{if $contributeMode eq \'direct\' and !$isAmountzero}
+{if $billingName || $address}
 
 ===============================================================================
 
@@ -12259,7 +12321,7 @@ INSERT INTO civicrm_msg_template
 {$address}
 {/if}
 
-{if $contributeMode eq \'direct\' and !$isAmountzero}
+{if $credit_card_number}
 ===========================================================
 {ts}Credit Card Information{/ts}
 
@@ -12315,7 +12377,6 @@ INSERT INTO civicrm_msg_template
 {capture assign=emptyBlockStyle }style="padding: 10px; border-bottom: 1px solid #999;background-color: #f7f7f7;"{/capture}
 {capture assign=emptyBlockValueStyle }style="padding: 10px; border-bottom: 1px solid #999;"{/capture}
 
-<p>Dear {$contactDisplayName}</p>
 <center>
  <table width="620" border="0" cellpadding="0" cellspacing="0" id="crm-event_receipt" style="font-family: Arial, Verdana, sans-serif; text-align: left;">
 
@@ -12324,7 +12385,7 @@ INSERT INTO civicrm_msg_template
   <!-- END HEADER -->
 
   <!-- BEGIN CONTENT -->
-
+   {if $emailGreeting}<tr><td>{$emailGreeting},</td></tr>{/if}
   <tr>
     <td>
       {if $isRefund}
@@ -12332,7 +12393,6 @@ INSERT INTO civicrm_msg_template
       {else}
       <p>{ts}A payment has been received.{/ts}</p>
       {/if}
-      <p>{ts}Please print this confirmation for your records.{/ts}</p>
     </td>
   </tr>
   <tr>
@@ -12450,7 +12510,7 @@ INSERT INTO civicrm_msg_template
     <tr>
       <td>
   <table style="border: 1px solid #999; margin: 1em 0em 1em; border-collapse: collapse; width:100%;">
-    {if $contributeMode eq \'direct\' and !$isAmountzero}
+    {if $billingName || $address}
           <tr>
             <th {$headerStyle}>
         {ts}Billing Name and Address{/ts}
@@ -12463,7 +12523,7 @@ INSERT INTO civicrm_msg_template
             </td>
           </tr>
     {/if}
-    {if $contributeMode eq\'direct\' and !$isAmountzero}
+    {if $credit_card_number}
           <tr>
             <th {$headerStyle}>
         {ts}Credit Card Information{/ts}
@@ -19009,12 +19069,16 @@ or want to inquire about reinstating your registration for this event.{/ts}</p>
 
 {/if}
 {if $is_recur}
-{if $contributeMode eq \'notify\' or $contributeMode eq \'directIPN\'}
-{ts 1=$cancelSubscriptionUrl}This membership will be renewed automatically. You can cancel the auto-renewal option by visiting this web page: %1.{/ts}
+{ts}This membership will be renewed automatically.{/ts}
+{if $cancelSubscriptionUrl}
+
+{ts 1=$cancelSubscriptionUrl}You can cancel the auto-renewal option by visiting this web page: %1.{/ts}
+
+{/if}
+
 {if $updateSubscriptionBillingUrl}
 
 {ts 1=$updateSubscriptionBillingUrl}You can update billing details for this automatically renewed membership by <a href="%1">visiting this web page</a>.{/ts}
-{/if}
 {/if}
 {/if}
 
@@ -19443,10 +19507,12 @@ or want to inquire about reinstating your registration for this event.{/ts}</p>
       </tr>
      {/if}
      {if $is_recur}
-      {if $contributeMode eq \'notify\' or $contributeMode eq \'directIPN\'}
        <tr>
         <td colspan="2" {$labelStyle}>
-         {ts 1=$cancelSubscriptionUrl}This membership will be renewed automatically. You can cancel the auto-renewal option by <a href="%1">visiting this web page</a>.{/ts}
+         {ts}This membership will be renewed automatically.{/ts}
+         {if $cancelSubscriptionUrl}
+           {ts 1=$cancelSubscriptionUrl}You can cancel the auto-renewal option by <a href="%1">visiting this web page</a>.{/ts}
+         {/if}
         </td>
        </tr>
        {if $updateSubscriptionBillingUrl}
@@ -19456,7 +19522,6 @@ or want to inquire about reinstating your registration for this event.{/ts}</p>
           </td>
          </tr>
        {/if}
-      {/if}
      {/if}
 
      {if $honor_block_is_active}
@@ -19809,12 +19874,16 @@ or want to inquire about reinstating your registration for this event.{/ts}</p>
 
 {/if}
 {if $is_recur}
-{if $contributeMode eq \'notify\' or $contributeMode eq \'directIPN\'}
-{ts 1=$cancelSubscriptionUrl}This membership will be renewed automatically. You can cancel the auto-renewal option by visiting this web page: %1.{/ts}
+{ts}This membership will be renewed automatically.{/ts}
+{if $cancelSubscriptionUrl}
+
+{ts 1=$cancelSubscriptionUrl}You can cancel the auto-renewal option by visiting this web page: %1.{/ts}
+
+{/if}
+
 {if $updateSubscriptionBillingUrl}
 
 {ts 1=$updateSubscriptionBillingUrl}You can update billing details for this automatically renewed membership by <a href="%1">visiting this web page</a>.{/ts}
-{/if}
 {/if}
 {/if}
 
@@ -20243,10 +20312,12 @@ or want to inquire about reinstating your registration for this event.{/ts}</p>
       </tr>
      {/if}
      {if $is_recur}
-      {if $contributeMode eq \'notify\' or $contributeMode eq \'directIPN\'}
        <tr>
         <td colspan="2" {$labelStyle}>
-         {ts 1=$cancelSubscriptionUrl}This membership will be renewed automatically. You can cancel the auto-renewal option by <a href="%1">visiting this web page</a>.{/ts}
+         {ts}This membership will be renewed automatically.{/ts}
+         {if $cancelSubscriptionUrl}
+           {ts 1=$cancelSubscriptionUrl}You can cancel the auto-renewal option by <a href="%1">visiting this web page</a>.{/ts}
+         {/if}
         </td>
        </tr>
        {if $updateSubscriptionBillingUrl}
@@ -20256,7 +20327,6 @@ or want to inquire about reinstating your registration for this event.{/ts}</p>
           </td>
          </tr>
        {/if}
-      {/if}
      {/if}
 
      {if $honor_block_is_active}
@@ -20886,9 +20956,9 @@ or want to inquire about reinstating your registration for this event.{/ts}</p>
       
       
       ('Pledges - Acknowledgement', '{ts}Thank you for your Pledge{/ts}
-', '{ts 1=$contact.display_name}Dear %1{/ts},
+', '{assign var="greeting" value="{contact.email_greeting}"}{if $greeting}<p>{$greeting},</p>{/if}
 
-{ts}Thank you for your generous pledge. Please print this acknowledgment for your records.{/ts}
+{ts}Thank you for your generous pledge.{/ts}
 
 ===========================================================
 {ts}Pledge Information{/ts}
@@ -20954,8 +21024,8 @@ or need to modify your payment schedule.{/ts}
 
   <tr>
    <td>
-    <p>{ts 1=$contact.display_name}dear %1{/ts},</p>
-    <p>{ts}thank you for your generous pledge. please print this acknowledgment for your records.{/ts}</p>
+    {assign var="greeting" value="{contact.email_greeting}"}{if $greeting}<p>{$greeting},</p>{/if}
+    <p>{ts}Thank you for your generous pledge.{/ts}</p>
    </td>
   </tr>
   <tr>
@@ -21050,9 +21120,9 @@ or need to modify your payment schedule.{/ts}</p>
 </html>
 ', @tpl_ovid_pledge_acknowledge, 1,          0),
       ('Pledges - Acknowledgement', '{ts}Thank you for your Pledge{/ts}
-', '{ts 1=$contact.display_name}Dear %1{/ts},
+', '{assign var="greeting" value="{contact.email_greeting}"}{if $greeting}<p>{$greeting},</p>{/if}
 
-{ts}Thank you for your generous pledge. Please print this acknowledgment for your records.{/ts}
+{ts}Thank you for your generous pledge.{/ts}
 
 ===========================================================
 {ts}Pledge Information{/ts}
@@ -21118,8 +21188,8 @@ or need to modify your payment schedule.{/ts}
 
   <tr>
    <td>
-    <p>{ts 1=$contact.display_name}dear %1{/ts},</p>
-    <p>{ts}thank you for your generous pledge. please print this acknowledgment for your records.{/ts}</p>
+    {assign var="greeting" value="{contact.email_greeting}"}{if $greeting}<p>{$greeting},</p>{/if}
+    <p>{ts}Thank you for your generous pledge.{/ts}</p>
    </td>
   </tr>
   <tr>
@@ -23163,7 +23233,7 @@ VALUES
 -- +--------------------------------------------------------------------+
 -- | CiviCRM version 5                                                  |
 -- +--------------------------------------------------------------------+
--- | Copyright CiviCRM LLC (c) 2004-2018                                |
+-- | Copyright CiviCRM LLC (c) 2004-2019                                |
 -- +--------------------------------------------------------------------+
 -- | This file is a part of CiviCRM.                                    |
 -- |                                                                    |
@@ -23979,4 +24049,4 @@ INSERT INTO `civicrm_report_instance`
     ( `domain_id`, `title`, `report_id`, `description`, `permission`, `form_values`)
 VALUES
     (  @domainID, 'Survey Details', 'survey/detail', 'Detailed report for canvassing, phone-banking, walk lists or other surveys.', 'access CiviReport', 'a:39:{s:6:"fields";a:2:{s:9:"sort_name";s:1:"1";s:6:"result";s:1:"1";}s:22:"assignee_contact_id_op";s:2:"eq";s:25:"assignee_contact_id_value";s:0:"";s:12:"sort_name_op";s:3:"has";s:15:"sort_name_value";s:0:"";s:17:"street_number_min";s:0:"";s:17:"street_number_max";s:0:"";s:16:"street_number_op";s:3:"lte";s:19:"street_number_value";s:0:"";s:14:"street_name_op";s:3:"has";s:17:"street_name_value";s:0:"";s:15:"postal_code_min";s:0:"";s:15:"postal_code_max";s:0:"";s:14:"postal_code_op";s:3:"lte";s:17:"postal_code_value";s:0:"";s:7:"city_op";s:3:"has";s:10:"city_value";s:0:"";s:20:"state_province_id_op";s:2:"in";s:23:"state_province_id_value";a:0:{}s:13:"country_id_op";s:2:"in";s:16:"country_id_value";a:0:{}s:12:"survey_id_op";s:2:"in";s:15:"survey_id_value";a:0:{}s:12:"status_id_op";s:2:"eq";s:15:"status_id_value";s:1:"1";s:11:"custom_1_op";s:2:"in";s:14:"custom_1_value";a:0:{}s:11:"custom_2_op";s:2:"in";s:14:"custom_2_value";a:0:{}s:17:"custom_3_relative";s:1:"0";s:13:"custom_3_from";s:0:"";s:11:"custom_3_to";s:0:"";s:11:"description";s:75:"Detailed report for canvassing, phone-banking, walk lists or other surveys.";s:13:"email_subject";s:0:"";s:8:"email_to";s:0:"";s:8:"email_cc";s:0:"";s:10:"permission";s:17:"access CiviReport";s:6:"groups";s:0:"";s:9:"domain_id";i:1;}');
-UPDATE civicrm_domain SET version = '5.7.0';
+UPDATE civicrm_domain SET version = '5.15.1';

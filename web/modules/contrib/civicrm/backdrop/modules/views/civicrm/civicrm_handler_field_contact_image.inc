@@ -1,6 +1,7 @@
 <?php
 
 class civicrm_handler_field_contact_image extends views_handler_field {
+
   public function option_definition() {
     $options = parent::option_definition();
     $options['url_only'] = array(
@@ -80,9 +81,9 @@ class civicrm_handler_field_contact_image extends views_handler_field {
     $form['width'] = array(
       '#title' => t('Width'),
       '#description' => t('Resize the image in the browser to this width. If left empty, the width will scale proportionally with the height.'),
-      '#type' => 'textfield',
+      '#type' => 'number',
       '#default_value' => $this->options['width'],
-      '#element_validate' => array('element_validate_integer_positive'),
+      '#min' => 0,
       '#dependency' => array(
         'edit-options-url-only' => array(0),
       ),
@@ -92,9 +93,9 @@ class civicrm_handler_field_contact_image extends views_handler_field {
     $form['height'] = array(
       '#title' => t('Height'),
       '#description' => t('Resize the image in the browser to this height. If left empty, the height will scale proportionally with the width.'),
-      '#type' => 'textfield',
+      '#type' => 'number',
       '#default_value' => $this->options['height'],
-      '#element_validate' => array('element_validate_integer_positive'),
+      '#min' => 0,
       '#dependency' => array(
         'edit-options-url-only' => array(0),
       ),

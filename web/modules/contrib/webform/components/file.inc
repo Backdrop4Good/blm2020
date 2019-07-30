@@ -191,21 +191,6 @@ function _webform_edit_file($component) {
     '#parents' => array('extra', 'progress_indicator'),
   );
 
-  // @todo: Make managed_file respect the "size" parameter.
-  /*
-  $form['display']['width'] = array(
-  '#type' => 'textfield',
-  '#title' => t('Width'),
-  '#default_value' => $component['extra']['width'],
-  '#description' => t('Width of the file field.') . ' ' .
-    t('Leaving blank will use the default size.'),
-  '#size' => 5,
-  '#maxlength' => 10,
-  '#weight' => 4,
-  '#parents' => array('extra', 'width')
-  );
-   */
-
   return $form;
 }
 
@@ -363,6 +348,9 @@ function _webform_render_file($component, $value = NULL, $filter = TRUE, $submis
     '#required' => $component['required'],
     '#default_value' => isset($value[0]) ? $value[0] : NULL,
     '#attributes' => $component['extra']['attributes'],
+    '#attached' => array(
+      'library' => array('system', 'backdrop.form'),
+    ),
     '#upload_validators' => array(
       'file_validate_size' => array($max_filesize),
       'file_validate_extensions' => array(implode(' ', $component['extra']['filtering']['types'])),
@@ -392,7 +380,7 @@ function _webform_render_file($component, $value = NULL, $filter = TRUE, $submis
  * wrapper around the element with the element's id, thereby creating 2 elements
  * with the same id.
  *
- * @param $variables
+ * @param array $variables
  *   An associative array containing:
  *   - element: A render element representing the file.
  *
@@ -493,7 +481,7 @@ function _webform_delete_file($component, $value) {
   // Delete an individual submission file.
   if (!empty($value[0]) && ($file = webform_get_file($value[0]))) {
     file_usage_delete($file, 'webform');
-    file_delete($file);
+    file_delete($file->fid);
   }
 }
 
@@ -624,7 +612,7 @@ function webform_file_usage_adjust($submission) {
     $files = file_load_multiple($submission->file_usage['deleted_fids']);
     foreach ($files as $file) {
       file_usage_delete($file, 'webform', 'submission', $submission->sid);
-      file_delete($file);
+      file_delete($file->fid);
     }
   }
 }
@@ -647,13 +635,13 @@ function webform_file_rename($node, $submission) {
 /**
  * Renames the uploaded file name using tokens.
  *
- * @param $node
+ * @param object $node
  *   The webform node object.
- * @param $submission
+ * @param object $submission
  *   The webform submission object.
- * @param $component
+ * @param array $component
  *   Component settings array for which fid is going to be processed.
- * @param $fid
+ * @param int $fid
  *   A file id to be processed.
  */
 function webform_file_process_rename($node, $submission, $component, $fid) {

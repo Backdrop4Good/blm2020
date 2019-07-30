@@ -112,7 +112,7 @@ function _webform_edit_select($component) {
     );
   }
 
-  if (module_exists('options_element')) {
+  if (function_exists('options_element_info') || function_exists('options_element_element_info')) {
     $options = _webform_select_options($component, FALSE, FALSE);
 
     $form['items'] = array(
@@ -900,7 +900,7 @@ function webform_select_options_ajax($source_name = '') {
   }
 
   $return = array(
-    'elementId' => module_exists('options_element') ? 'edit-items-options-options-field-widget' : 'edit-extra-items',
+    'elementId' => (function_exists('options_element_info') || function_exists('options_element_element_info')) ? 'edit-items-options-options-field-widget' : 'edit-extra-items',
     'options' => $options,
   );
 
@@ -965,11 +965,11 @@ function _webform_select_options_info() {
 /**
  * Execute a select option callback.
  *
- * @param $name
+ * @param string $name
  *   The name of the options group.
- * @param $component
+ * @param array $component
  *   The full Webform component.
- * @param $flat
+ * @param bool $flat
  *   Whether the information returned should exclude any nested groups.
  */
 function _webform_select_options_callback($name, $component, $flat = FALSE) {

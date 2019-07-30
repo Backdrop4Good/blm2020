@@ -3,7 +3,7 @@
  +--------------------------------------------------------------------+
  | CiviCRM version 5                                                  |
  +--------------------------------------------------------------------+
- | Copyright CiviCRM LLC (c) 2004-2018                                |
+ | Copyright CiviCRM LLC (c) 2004-2019                                |
  +--------------------------------------------------------------------+
  | This file is a part of CiviCRM.                                    |
  |                                                                    |
@@ -28,7 +28,7 @@
 /**
  *
  * @package CRM
- * @copyright CiviCRM LLC (c) 2004-2018
+ * @copyright CiviCRM LLC (c) 2004-2019
  */
 class CRM_Case_XMLProcessor {
 
@@ -36,7 +36,9 @@ class CRM_Case_XMLProcessor {
    * FIXME: This does *NOT* belong in a static property, but we're too late in
    * the 4.5-cycle to do the necessary cleanup.
    *
-   * @var array|null array(int $id => string $relTypeCname)
+   * Format is [int $id => string $relTypeCname].
+   *
+   * @var array|null
    */
   public static $activityTypes = NULL;
 
@@ -44,7 +46,9 @@ class CRM_Case_XMLProcessor {
    * FIXME: This does *NOT* belong in a static property, but we're too late in
    * the 4.5-cycle to do the necessary cleanup.
    *
-   * @var array|null array(int $id => string $relTypeCname)
+   * Format is array(int $id => string $relTypeCname).
+   *
+   * @var array|null
    */
   public static $relationshipTypes = NULL;
 
@@ -113,7 +117,7 @@ class CRM_Case_XMLProcessor {
     if (self::$relationshipTypes === NULL) {
       $relationshipInfo = CRM_Core_PseudoConstant::relationshipType('label', TRUE);
 
-      self::$relationshipTypes = array();
+      self::$relationshipTypes = [];
       foreach ($relationshipInfo as $id => $info) {
         self::$relationshipTypes[$id] = $info[CRM_Case_XMLProcessor::REL_TYPE_CNAME];
       }

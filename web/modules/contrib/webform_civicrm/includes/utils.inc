@@ -778,13 +778,14 @@ function wf_crm_get_fields($var = 'fields') {
       'type' => 'select',
       'expose_list' => TRUE,
     );
+    $defaultLocType = CRM_Core_BAO_LocationType::getDefault();
     foreach (array('address' => t('Address # Location'), 'phone' => t('Phone # Location'), 'email' => t('Email # Location'), 'im' => t('IM # Location')) as $key => $label) {
       if (isset($sets[$key])) {
         $fields[$key . '_location_type_id'] = array(
           'name' => $label,
           'type' => 'select',
           'expose_list' => TRUE,
-          'value' => '1',
+          'value' => $defaultLocType->id,
         );
       }
     }
@@ -955,6 +956,9 @@ function wf_crm_get_fields($var = 'fields') {
                   'data_type' => 'ContactReference',
                   'set' => 'caseRoles',
                   'empty_option' => t('None'),
+                  'extra' => array(
+                    'multiple' => 1,
+                  ),
                 );
               }
               $fields['case_role_' . $rel_type['id']]['case_types'][] = $case_type['id'];
@@ -1129,6 +1133,10 @@ function wf_crm_get_fields($var = 'fields') {
         'expose_list' => TRUE,
         'value' => 0,
         'exposed_empty_option' => '- ' . t('Automatic') . ' -',
+      );
+      $fields['participant_note'] = array(
+        'name' => t('Participant Notes'),
+        'type' => 'textarea',
       );
       if (isset($sets['contribution'])) {
         $fields['participant_fee_amount'] = array(

@@ -16,7 +16,7 @@ settings.
 Version Compatibility
 ---------------------
 
-This module's 1.x version is compatible with Webform 1.x and CiviCRM 4.7 for Backdrop CMS.
+This module's 1.x version is compatible with Backdrop 1.x, Webform 1.x and CiviCRM 4.4 through 5.x.
 
 Documentation
 -------------
@@ -41,16 +41,13 @@ Contributing
 
 Pull-requests should be submitted with a clear description of the problem and steps to reproduce.
 
-Contributing
-------------
-
-Pull-requests should be submitted with a clear description of the problem and steps to reproduce.
 
 Credits
 -------
 
-- Ported to Backdrop CMS by Jack Aponte.
+- Ported to Backdrop CMS by Jack Aponte, sponsored by Palante Technology Cooperative (https://palantetech.coop) and the Audre Lorde Project (https://alp.org)
 - Originally written for Drupal by Coleman Watts (https://github.com/colemanw).
+- Drupal module maintained by Coleman Watts and KarinG (https://www.drupal.org/u/karing)
 
 License
 -------

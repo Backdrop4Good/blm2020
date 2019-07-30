@@ -5,9 +5,9 @@ type = module
 package = CiviCRM
 dependencies[] = civicrm
 dependencies[] = webform (>=4.12)
-dependencies[] = options_element
 
-; Added by Backdrop CMS packaging script on 2018-10-24
+
+; Added by Backdrop CMS packaging script on 2019-04-17
 project = webform_civicrm
-version = 1.x-4.23.0
-timestamp = 1540429253
+version = 1.x-4.26.0
+timestamp = 1555557661
