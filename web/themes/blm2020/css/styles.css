@@ -2305,3 +2305,9 @@ header.l-header a.header-site-name-link {
 
 .button, input.form-submit, input.button-primary, button.button-primary, .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
   background: #FF0000; }
+
+.pager-first, .pager-previous, .pager-ellipsis, .pager-current, .pager-next, .pager-last, .pager-item, .pager-current {
+  background-color: transparent;
+  color: #999; }
+  .pager-first a:hover, .pager-previous a:hover, .pager-ellipsis a:hover, .pager-current a:hover, .pager-next a:hover, .pager-last a:hover, .pager-item a:hover, .pager-current a:hover {
+    background-color: #eee; }

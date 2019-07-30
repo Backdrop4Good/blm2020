@@ -157,3 +157,11 @@ header.l-header a.header-site-name-link {
 .button, input.form-submit, input.button-primary, button.button-primary, .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
   background: #FF0000;
 }
+
+.pager-first, .pager-previous, .pager-ellipsis, .pager-current, .pager-next, .pager-last, .pager-item, .pager-current {
+  background-color: transparent;
+  color: #999;
+  a:hover {
+    background-color: #eee;
+  }
+}
