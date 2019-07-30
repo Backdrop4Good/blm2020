@@ -169,6 +169,15 @@
         "delete terms in business_categories",
         "administer contact forms",
         "access site-wide contact form",
-        "access user contact forms"
+        "access user contact forms",
+        "access all webform results",
+        "access own webform results",
+        "edit all webform submissions",
+        "delete all webform submissions",
+        "access own webform submissions",
+        "edit own webform submissions",
+        "delete own webform submissions",
+        "edit webform components",
+        "administer Compact Forms"
     ]
 }

@@ -1,0 +1,12 @@
+name = Compact Forms
+description = Overlays form fields with their respective labels using jQuery.
+backdrop = 1.x
+type = module
+package = User interface
+configure = admin/config/user-interface/compact_forms
+
+
+; Added by Backdrop CMS packaging script on 2017-09-24
+project = compact_forms
+version = 1.x-1.0.3
+timestamp = 1506312705

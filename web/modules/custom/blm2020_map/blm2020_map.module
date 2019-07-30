@@ -182,3 +182,97 @@ function blm2020_map_node_presave($node) {
   }
 }
 
+
+/**
+ * CiviCRM implmentation of the map is below, in block form.
+ *
+ * Geocoding happens automatically in CiviCRM so we can just pull 
+ * lat and long from there.
+ *
+ */
+ 
+function blm2020_map_block_info() {
+  $blocks['blm2020_map_mapblock'] = array(
+    'info' => t('BLM Memphis Black Business Directory Map (Mapbox)'),
+  );
+  return $blocks;
+}
+ 
+/**
+ * Implementation of hook_block_view().
+ */
+function blm2020_map_block_view($delta='') {
+  $block = array();
+  switch ($delta) {
+    case 'blm2020_map_mapblock':
+      $block['subject'] = t('BLM Memphis Black Business Directory Map (Mapbox)');
+      $block['content'] = _blm2020_map_mapblock_view( );
+      break;
+  }
+  return $block;
+}
+ 
+/**
+ * Pull data from CiviCRM and display in map.
+ */
+function _blm2020_map_mapblock_view() {
+  // Default: don't display the entire directory on the map, only show if a category is chosen.
+  $results = array();
+  $markup = '';
+  if (module_exists('civicrm')) {
+    // Provide the div for leaflet to inject the map into.
+    $markup = '<div id="mapid"></div>';
+    
+    $exposed_filters = array();
+    if (isset($_GET['cat'])) {
+      $exposed_filters['cat'] = check_plain($_GET['cat']);
+    }
+    if (isset($_GET['keyword'])) {
+      $exposed_filters['keyword'] = check_plain($_GET['keyword']);
+    }
+    if (!empty($exposed_filters)) {
+      $view = views_get_view('businesses');
+      $view->set_display('page');
+      $view->set_exposed_input($exposed_filters);
+      $view->init_display();
+      $view->pre_execute();
+      $view->execute();
+      $results = $view->result;
+    }
+  
+    // Add in the css.
+    backdrop_add_css(backdrop_get_path('module', 'blm2020_map') . '/css/blm2020_map.css');
+  
+    $markup .= '
+      <script src="https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js"></script>
+      <link href="https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css" rel="stylesheet" />
+      <script>
+        var mymap = L.map(\'mapid\').setView([35.1095, -90.0490], 11);
+  
+        L.tileLayer(\'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}\', {
+          attribution: \'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>\',
+          maxZoom: 18,
+          id: \'mapbox.streets\',
+          accessToken: \'pk.eyJ1Ijoic2VydW5kZXB1dHkiLCJhIjoiY2pjejJjcHRiMTB6cTJ4bzFsMTI0MWNhcSJ9.qJgR6b-sWntEq9zkV5zX0g\'
+        }).addTo(mymap);
+      ';
+
+    
+    foreach($results as $index => $result) {
+      $latitude = $result->civicrm_address3_geo_code_1;
+      $longitude = $result->civicrm_address4_geo_code_2;
+      $business_name = addslashes($result->civicrm_contact_display_name);
+      $description = addslashes($result->civicrm_value_business_info_1_description_1);
+      $description = preg_replace( "/\r|\n/", "", $description );
+      $markup .= "var marker$index = L.marker([$latitude, $longitude]).addTo(mymap);";
+      $markup .= "marker$index.bindPopup(\"<h3>$business_name</h3>$description\", {
+          maxWidth : 480,
+          maxHeight : 320
+      });";
+    }
+    $markup .= "mymap.scrollWheelZoom.disable();";
+    $markup .= '</script>';
+  }
+
+  return $markup;
+}

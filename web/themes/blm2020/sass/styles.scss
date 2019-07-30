@@ -20,3 +20,148 @@
 @import "teasers";
 @import "vertical-tabs";
 @import "progress";
+
+/* Alpha overrides */
+header.l-header {
+  a.header-site-name-link {
+    background: none;
+    font-size: 1rem;
+    color: #fff;
+  }
+}
+
+html body:not(.toolbar) {
+  margin-top: 0 !important;
+}
+
+h1.page-title {
+  font-family: cornerstoneregular, "sans-serif";
+}
+
+.webform-client-form {
+  fieldset {
+    display: block;
+    border: none;
+    border-radius: 2px;
+    background-color: rgba(222,226,234,.2);
+    .fieldset-wrapper {
+      padding: 1%; 
+      .form-item.nolabel {
+        margin: 0; 
+        label {
+          display: none;
+        }
+        .form-item {
+          label {
+            display: inline-block;
+          }
+        }
+      }
+    }
+    .webform-component-textfield, .webform-component-email {
+      display: inline-block;
+      width: 49%; 
+      input {
+        width: 95%; 
+      }
+    }
+    .webform-component-checkboxes, .webform-component-radios {
+      .form-item {
+        display: inline-block;
+        width: auto;
+        padding-right: 5%;
+        vertical-align: top;
+        label {
+          font-weight: normal;
+          max-width: 90%;
+          display: inline-block;
+          white-space: nowrap; 
+        }
+        input {
+          display: inline-block;
+          vertical-align: top;
+          margin-top: .5rem;
+        }
+      }
+    }
+    .webform-component-file {
+      label {
+        display: block;
+      }
+      .form-managed-file {
+        display: inline-block; 
+      }
+      .description {
+        display: inline-block;
+        font-size: .8rem;
+        border: none;
+        vertical-align: top;
+        margin: 0;
+        padding-top: 0; 
+      }
+    }
+    label.compact-form-label {
+      font-weight: normal;
+      font-size: .9rem;
+      color: #777; 
+    }
+    .business-categories {
+      .form-item {
+        width: 24%;
+        padding-right: 1%; 
+        label {
+          white-space: normal; 
+        }
+      }
+    }
+  }
+}
+
+
+.view-businesses {
+  h2 {
+    font-weight: bold;
+    font-size: 1.2rem; 
+  }
+  i.fas {
+    padding: 3px; 
+  }
+  table {
+    th {
+      padding: 15px 5px;
+      border: none; 
+    }
+    td.views-field-email {
+      min-width: 100px;
+    }
+  }
+  .view-filters {
+    background-color: #DADADB;
+    padding: 10px;
+    border-radius: 2px;
+    font-size: .8rem;
+  }
+}
+
+/* Override Shoreditch top margin */
+html body:not(.toolbar) {
+  margin-top: 0 !important; 
+}
+
+/* Override skin.css  */
+header.l-header a.header-site-name-link {
+  background: none;
+  font-size: 1rem;
+  color: #fff; 
+}
+.button, input.form-submit, input.button-primary, button.button-primary, .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+  background: #FF0000;
+}
+
+.pager-first, .pager-previous, .pager-ellipsis, .pager-current, .pager-next, .pager-last, .pager-item, .pager-current {
+  background-color: transparent;
+  color: #999;
+  a:hover {
+    background-color: #eee;
+  }
+}
