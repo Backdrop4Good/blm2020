@@ -1,6 +1,7 @@
 name = BLM Memphis Maps Module
-description = Create maps pages for BLM Memphis businesses.
+description = Create filterable maps pages for BLM Memphis businesses.
 package = BLM Memphis
 backdrop = 1.x
 type = module
 
+dependencies[] = civicrm
